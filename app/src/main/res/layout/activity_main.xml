@@ -46,12 +46,6 @@
     </RelativeLayout>
 
     <!-- Content -->
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="0dp"/>
 
     <!-- Footer -->
 <!--    <LinearLayout-->
@@ -99,6 +93,13 @@
 <!--            android:src="@drawable/ic_volume_button" />-->
 
 <!--    </LinearLayout>-->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_weight="1" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
