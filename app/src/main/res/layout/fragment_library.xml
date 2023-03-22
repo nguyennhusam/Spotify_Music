@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    tools:context=".HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/filter_album"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Tab Library"
-        android:textSize="30dp"
-        android:textColor="@color/white"/>
-
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:minHeight="48dp">
+        <Button
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="+"/>
+        <Button
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Mới nhất"/>
+    </LinearLayout>
+   <androidx.recyclerview.widget.RecyclerView
+       android:id="@+id/id_RCVAlbum"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@id/filter_album"
+       android:layout_margin="5dp"
+       android:orientation="vertical"
+       android:padding="4dp"
+       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+       tools:listitem="@layout/layout_album_items"
+       />
 </RelativeLayout>

@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentStateManagerControl;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -20,6 +21,10 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+
+import hcmute.edu.vn.musicmediaplayer.Model.Albums;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,8 +78,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-    }
 
+
+    }
 
 
 }
