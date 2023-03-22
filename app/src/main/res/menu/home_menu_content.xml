@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/hot_music"
+        android:title="Hot Music"
+        android:icon="@drawable/hot_music"/>
+    <item android:id="@+id/singers"
+        android:title="Singers"
+        android:icon="@drawable/singers"/>
+    <item android:id="@+id/genres"
+        android:title="Genres"
+        android:icon="@drawable/genres"/>
+    <item android:id="@+id/top10"
+        android:title="Top 10"
+        android:icon="@drawable/star"/>
+</menu>
