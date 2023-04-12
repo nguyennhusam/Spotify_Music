@@ -1,9 +1,14 @@
 package hcmute.edu.vn.musicmediaplayer;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +22,8 @@ public class LibraryFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private Button btnUpload;
 
     private String mParam1;
     private String mParam2;
@@ -51,6 +58,14 @@ public class LibraryFragment extends Fragment {
        View v= inflater.inflate(R.layout.fragment_library, container, false);
         // Inflate the layout for this fragment
         RecyclerView albumsRV = v.findViewById(R.id.id_RCVAlbum);
+
+        btnUpload = v.findViewById(R.id.btn_upload);
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openUploadActivity();
+            }
+        });
 
         // on below line creating list, initializing adapter
         // and setting it to recycler view.
@@ -138,5 +153,19 @@ public class LibraryFragment extends Fragment {
         // on below line adding request to queue.
 //        queue.add(albumObjReq);
     }
+    public void openUploadActivity() {
+        Intent intent = new Intent(getActivity(), UploadActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Toast.makeText(getActivity(), "File uploaded successfully", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 }
