@@ -62,7 +62,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewhold
         });
     }
     public void setFullList(ArrayList<Song> list){
-        this.listSong = list;
+        this.filteredList = list;
     }
     @Override
     public int getItemCount() {

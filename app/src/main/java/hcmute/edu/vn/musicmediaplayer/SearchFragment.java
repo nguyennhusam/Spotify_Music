@@ -1,36 +1,38 @@
 package hcmute.edu.vn.musicmediaplayer;
 
+
 import android.app.SearchManager;
-import android.graphics.Color;
+import android.content.Context;
+
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 import hcmute.edu.vn.musicmediaplayer.Adapter.SearchAdapter;
 import hcmute.edu.vn.musicmediaplayer.Model.Song;
@@ -42,6 +44,7 @@ public class SearchFragment extends Fragment {
     private DatabaseReference myRef;
     RecyclerView recyclerViewtim;
     SearchAdapter searchAdapter;
+    SearchView searchView;
 
     ArrayList<Song> listSong;
     private String mParam1;
@@ -50,6 +53,7 @@ public class SearchFragment extends Fragment {
     public SearchFragment() {
         // Required empty public constructor
     }
+
 
     public static SearchFragment newInstance(String param1, String param2) {
         SearchFragment fragment = new SearchFragment();
@@ -72,12 +76,14 @@ public class SearchFragment extends Fragment {
         System.out.println();
         setHasOptionsMenu(true);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         recyclerViewtim = view.findViewById(R.id.recyclerviewtimkiem);
         recyclerViewtim.setHasFixedSize(true);
+
 
         myRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/")
                 .getReference("uploads");
@@ -86,35 +92,52 @@ public class SearchFragment extends Fragment {
         listSong = new ArrayList<>();
         searchAdapter = new SearchAdapter(getContext(), listSong);
         recyclerViewtim.setAdapter(searchAdapter);
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        recyclerViewtim.addItemDecoration(itemDecoration);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Song song = dataSnapshot.getValue(Song.class);
                     listSong.add(song);
                 }
                 searchAdapter.setFullList(new ArrayList<>(listSong));
                 searchAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
 
         });
-        System.out.println("listSize: "+listSong.size());
+        System.out.println("listSize: " + listSong.size());
         // Inflate the layout for this fragment
         return view;
     }
+
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_search, menu);
         MenuItem menuItem = menu.findItem(R.id.searchId);
+
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        searchView = (SearchView) menu.findItem(R.id.searchId).getActionView();
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        searchView.setMaxWidth(Integer.MAX_VALUE);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menuItem.getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchAdapter.getFilter().filter(query);
                 return false;
             }
 
