@@ -6,6 +6,8 @@ public class Song {
     private String sName;
     private String sSongUrl;
     private String sArtist;
+    private String sImageUrl;
+
 
     public Song(String sName, String sSongUrl, String sArtist, String sImageUrl) {
         if (sName.trim().equals("")) {
@@ -23,11 +25,8 @@ public class Song {
             sImageUrl = "https://images.macrumors.com/t/hi1_a2IdFGRGMsJ0x31SdD_IcRk=/1600x/article-new/2018/05/apple-music-note.jpg";
         }
         this.sImageUrl = sImageUrl;
-
-
     }
 
-    private String sImageUrl;
 
     public int getSongId() {
         return songId;

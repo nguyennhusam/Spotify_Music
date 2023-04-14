@@ -88,7 +88,8 @@ public class UploadActivity extends AppCompatActivity {
                     Toast.makeText(UploadActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
                     uploadFile();
-                }            }
+                }
+            }
         });
     }
 
