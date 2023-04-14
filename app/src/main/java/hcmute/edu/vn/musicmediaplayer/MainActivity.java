@@ -15,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -31,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 mViewPager2;
     private BottomNavigationView mBottomNavigationView;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

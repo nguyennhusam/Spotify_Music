@@ -1,35 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-    <RelativeLayout
-        android:id="@+id/header"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbartimkiem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:paddingStart="5dp">
-        <EditText
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:hint="search something"
-            android:textColor="@color/green"
-            android:background="@null"
-            android:textSize="24sp"
-         />
-        <ImageView
-            android:id="@+id/img_setting"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center_horizontal"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:collapseIcon="?attr/actionModeCloseDrawable"
+        app:menu="@menu/menu_search"
+        app:title="Search ten bai hat"
+        app:titleTextColor="#FFF" />
 
-            android:src="@drawable/music_search" />
-    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerviewtimkiem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbartimkiem"
+
+        android:layout_marginTop="20dp" />
 
 </RelativeLayout>

@@ -55,8 +55,6 @@ public class UploadActivity extends AppCompatActivity {
     private StorageTask mUploadTask;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +86,8 @@ public class UploadActivity extends AppCompatActivity {
                     Toast.makeText(UploadActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
                     uploadFile();
-                }            }
+                }
+            }
         });
     }
 
@@ -161,7 +160,7 @@ public class UploadActivity extends AppCompatActivity {
                                     upload.setsSongUrl(finalDownloadUrl);
                                     //push to firebase db
                                     String uploadId = mDatabaseRef.push().getKey();
-                                    boolean b= mDatabaseRef.child(uploadId).setValue(upload).isSuccessful();
+                                    boolean b = mDatabaseRef.child(uploadId).setValue(upload).isSuccessful();
                                     System.out.println(b);
                                 }
                             });

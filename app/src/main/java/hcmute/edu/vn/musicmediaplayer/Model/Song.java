@@ -7,6 +7,9 @@ public class Song {
     private String sSongUrl;
     private String sArtist;
 
+    public Song() {
+    }
+
     public Song(String sName, String sSongUrl, String sArtist, String sImageUrl) {
         if (sName.trim().equals("")) {
             sName = "No Name";
