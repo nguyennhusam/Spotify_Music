@@ -9,13 +9,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbartimkiem"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:collapseIcon="?attr/actionModeCloseDrawable"
-        app:menu="@menu/menu_search"
-        app:title="Search ten bai hat"
         app:titleTextColor="#FFF" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -23,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbartimkiem"
-
         android:layout_marginTop="20dp" />
 
 </RelativeLayout>

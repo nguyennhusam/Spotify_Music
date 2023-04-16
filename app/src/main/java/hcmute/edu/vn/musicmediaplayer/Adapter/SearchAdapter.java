@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import hcmute.edu.vn.musicmediaplayer.Model.Song;
 import hcmute.edu.vn.musicmediaplayer.R;
@@ -26,30 +27,30 @@ import hcmute.edu.vn.musicmediaplayer.R;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewholder> implements Filterable {
 
     Context context;
-    ArrayList<Song> listSong;
-    ArrayList<Song> filteredList;
+    List<Song> listSong;
+    List<Song> filteredList;
 
-    public SearchAdapter(Context context, ArrayList<Song> list) {
+    public SearchAdapter(Context context, List<Song> list) {
         this.context = context;
         this.listSong = list;
         this.filteredList = new ArrayList<>(listSong); // tạo một bản sao của danh sách ban đầu
     }
-    @Override
-    public Filter getFilter() {
-        return null;
-    }
+
 
     @NonNull
     @Override
     public SearchAdapter.myViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.layout_song_item_search, parent, false);
-        return new myViewholder(view);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.layout_song_item_search, parent, false);
+        return new SearchAdapter.myViewholder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SearchAdapter.myViewholder holder, int position) {
-        Song song = filteredList.get(position);
+        Song song = listSong.get(position);
+        if(song == null){
+            return;
+        }
         holder.txttentimkiem.setText(song.getsName());
         holder.txtcasitimkiem.setText(song.getsArtist());
         Picasso.get().load(song.getsImageUrl()).into(holder.imganhtimkiem);
@@ -61,42 +62,50 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewhold
             }
         });
     }
-    public void setFullList(ArrayList<Song> list){
-        this.listSong = list;
+    public void setFullList(List<Song> list){
+
+        this.filteredList = list;
     }
     @Override
     public int getItemCount() {
-        return filteredList.size();
+        if(listSong!=null){
+            return listSong.size();
+        }
+        return 0;
     }
 
-    private Filter filterdata = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            String searchText = constraint.toString().toLowerCase();
-            ArrayList<Song> templist = new ArrayList<>();
-            if (searchText.length() == 0 || searchText.isEmpty()) {
-
-                templist.addAll(listSong);
-            } else {
-
-                for (Song item : listSong) {
-                    if (item.getsName().toLowerCase().contains(searchText)) {
-                        templist.add(item);
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String searchText = constraint.toString().toLowerCase();
+                List<Song> templist = new ArrayList<>();
+                System.out.println(searchText+" -- ");
+                if (searchText.length()==0 ||searchText.isEmpty()) {
+                    templist.addAll(filteredList);
+                } else {
+                    for (Song item : filteredList) {
+                        System.out.println(" name:  "+item.getsName()+" - searchText: "+ searchText);
+                        if(item.getsName() != null) {
+                            if (item.getsName().toLowerCase().contains(searchText)) {
+                                templist.add(item);
+                            }
+                        }
                     }
                 }
+                FilterResults filterresults = new FilterResults();
+                filterresults.values = templist;
+                return filterresults;
             }
-            FilterResults filterresults = new FilterResults();
-            filterresults.values = templist;
-            return filterresults;
-        }
 
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            filteredList.clear();
-            filteredList.addAll((Collection<? extends Song>) filterResults.values);
-            notifyDataSetChanged();
-        }
-    };
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                listSong =(List<Song>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
 
     public static class myViewholder extends RecyclerView.ViewHolder {
 
@@ -113,52 +122,3 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewhold
     }
 
 }
-//}public class SearchAdapter extends FirebaseRecyclerAdapter<Song, SearchAdapter.ViewHolder> {
-//
-//    Context context;
-//    ArrayList<Song> ListSong;
-//
-//    public SearchAdapter(@NonNull FirebaseRecyclerOptions<Song> options) {
-//        super(options);
-//    }
-//
-//    @Override
-//    protected void onBindViewHolder(@NonNull SearchAdapter.ViewHolder holder, int position, @NonNull Song model) {
-//        Song song = ListSong.get(position);
-//        holder.txttentimkiem.setText(song.getsName());
-//        holder.txtcasitimkiem.setText(song.getsArtist());
-//        Picasso.get().load(song.getsImageUrl()).into(holder.imganhtimkiem);
-//    }
-//
-//
-//    @NonNull
-//    @Override
-//    public SearchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-//        View view = inflater.inflate(R.layout.layout_song_item_search, parent, false);
-//        return new ViewHolder(view);
-//    }
-//
-////    @Override
-////    public int getItemCount() {
-////        if (ListSong != null) {
-////            return ListSong.size();
-////        }
-////        return 0;
-////    }
-//
-//    public class ViewHolder extends RecyclerView.ViewHolder{
-//
-//        TextView txttentimkiem, txtcasitimkiem;
-//        ImageView imganhtimkiem;
-//
-//        public ViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//            txttentimkiem = itemView.findViewById(R.id.txttennhac);
-//            txtcasitimkiem = itemView.findViewById(R.id.txtcasinhac);
-//            imganhtimkiem = itemView.findViewById(R.id.imgnhac);
-//
-//        }
-//    }
-//
-//}
