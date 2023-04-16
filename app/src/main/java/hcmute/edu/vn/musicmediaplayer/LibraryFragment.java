@@ -8,25 +8,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import hcmute.edu.vn.musicmediaplayer.Model.Albums;
+import hcmute.edu.vn.musicmediaplayer.Model.Album;
+import hcmute.edu.vn.musicmediaplayer.Model.Song;
 
 public class LibraryFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private Button btnUpload;
+    private Button btnUpload, btnAddAlbum;
 
     private String mParam1;
     private String mParam2;
+
+    private RelativeLayout liked_album;
+    private RelativeLayout available_album;
+
+    private DatabaseReference mDatabaseRef;
+
+
 
     public LibraryFragment() {
         // Required empty public constructor
@@ -67,23 +82,72 @@ public class LibraryFragment extends Fragment {
             }
         });
 
-        // on below line creating list, initializing adapter
-        // and setting it to recycler view.
-        ArrayList<Albums> albumRVModalArrayList = new ArrayList<>();
+        liked_album = v.findViewById(R.id.liked_album);
+        available_album = v.findViewById(R.id.available_album);
+        btnAddAlbum = v.findViewById(R.id.btn_add_album);
 
-        albumRVModalArrayList.add(new Albums(1,"Sẵn trên máy",15,"https://cdn-icons-png.flaticon.com/512/31/31623.png"));
-        albumRVModalArrayList.add(new Albums(2,"Yêu thích",10,"https://cdn-icons-png.flaticon.com/512/1077/1077035.png"));
-        albumRVModalArrayList.add(new Albums(3,"Tập của bạn",5,"https://cdn-icons-png.flaticon.com/512/25/25667.png"));
 
+
+        btnAddAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NewPlaylistDialogFragment dialog = new NewPlaylistDialogFragment();
+                dialog.show(getFragmentManager(), "NewPlaylistDialogFragment");
+            }
+        });
+
+        liked_album.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent  = new Intent(getContext(),AlbumDetailsActivity.class);
+//                intent.putExtras();
+                startActivity(intent);
+            }
+        });
+
+        available_album.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent  = new Intent(getContext(),AlbumDetailsActivity.class);
+//                intent.putExtras();
+                startActivity(intent);
+            }
+        });
+
+        mDatabaseRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("albums");
+        ArrayList<Album> albumRVModalArrayList = new ArrayList<>();
         AlbumAdapter albumRVAdapter = new AlbumAdapter(albumRVModalArrayList, this);
         albumsRV.setHasFixedSize(true);
-
         albumsRV.setAdapter(albumRVAdapter);
-        albumRVAdapter.notifyDataSetChanged();
-        // on below line creating a variable for url
-        String url = "https://api.spotify.com/v1/albums?ids=2oZSF17FtHQ9sYBscQXoBe%2C0z7bJ6UpjUw8U4TATtc5Ku%2C36UJ90D0e295TvlU109Xvy%2C3uuu6u13U0KeVQsZ3CZKK4%2C45ZIondgVoMB84MQQaUo9T%2C15CyNDuGY5fsG0Hn9rjnpG%2C1HeX4SmCFW4EPHQDvHgrVS%2C6mCDTT1XGTf48p6FkK9qFL";
 
-//        albumRVAdapter.notifyDataSetChanged();
+        final boolean[] isFirstTime = {true};
+
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (isFirstTime[0]) {
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        Album album = dataSnapshot.getValue(Album.class);
+                        albumRVModalArrayList.add(album);
+                    }
+                    albumRVAdapter.notifyDataSetChanged();
+                    isFirstTime[0] = false;
+                } else {
+                    Album newAlbum = snapshot.getValue(Album.class);
+                    albumRVModalArrayList.add(newAlbum);
+                    int insertedPosition = albumRVModalArrayList.size() - 1;
+                    albumRVAdapter.notifyItemRangeInserted(insertedPosition, 1);
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+
         return v;
     }
 

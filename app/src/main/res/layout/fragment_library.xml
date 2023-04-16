@@ -15,10 +15,12 @@
         android:orientation="horizontal"
         android:minHeight="48dp">
         <Button
+            android:id="@+id/btn_add_album"
             android:padding="5dp"
             android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="+"/>
+            android:layout_height="match_parent"
+            android:text="+"
+            />
         <Button
             android:padding="5dp"
             android:layout_width="wrap_content"
@@ -35,16 +37,81 @@
             android:text="Upload Song"
             />
     </LinearLayout>
+    <LinearLayout
+        android:layout_below="@id/filter_album"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:id="@+id/default_album"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <RelativeLayout
+            android:id="@+id/liked_album"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+            <ImageView
+                android:id="@+id/img_liked_album"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:src="@drawable/loved"
+                />
+
+            <TextView
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/img_liked_album"
+                android:id="@+id/tv_liked_album"
+                android:layout_width="match_parent"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:text="Yêu thích"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/available_album"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+            <ImageView
+                android:id="@+id/img_available_album"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:src="@drawable/local"
+                />
+
+            <TextView
+                android:id="@+id/tv_available_album"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/img_available_album"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="Sẵn trên máy"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/id_RCVAlbum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/filter_album"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/default_album"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical"
         android:padding="4dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

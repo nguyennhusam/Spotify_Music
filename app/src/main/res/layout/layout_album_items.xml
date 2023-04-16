@@ -39,12 +39,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bài hát yêu thích"
-
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_album_number"
+            android:id="@+id/tv_album_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10 bài"

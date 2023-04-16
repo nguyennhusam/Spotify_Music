@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     android:orientation="vertical">
 
     <EditText
@@ -17,16 +18,42 @@
         android:hint="Artist" />
 
     <Button
-        android:id="@+id/button_select_file"
+        android:id="@+id/button_select_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select File" />
+        android:text="Select Image File" />
+
 
     <ImageView
         android:id="@+id/imageView_selected_file"
         android:layout_width="match_parent"
+        android:layout_height="330dp"
+        android:layout_marginTop="16dp"
+         />
+    <ProgressBar
+        android:id="@+id/progress_bar_image"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:layout_above="@+id/button_upload"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/button_select_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Audio File" />
+
+    <TextView
+        android:id="@+id/tv_song_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:hint="Song Information"
+        android:gravity="center"
+        android:textSize="24sp" />
 
 
 

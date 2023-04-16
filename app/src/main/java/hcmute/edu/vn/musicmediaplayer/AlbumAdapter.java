@@ -1,6 +1,5 @@
 package hcmute.edu.vn.musicmediaplayer;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +14,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import hcmute.edu.vn.musicmediaplayer.Model.Albums;
+import hcmute.edu.vn.musicmediaplayer.Model.Album;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
     // creating variables for array list and context
-    private ArrayList<Albums> albumRVModalArrayList;
+    private ArrayList<Album> albumRVModalArrayList;
     private Fragment context;
 
     // creating a constructor.
-    public AlbumAdapter(ArrayList<Albums> albumRVModalArrayList, Fragment context) {
+    public AlbumAdapter(ArrayList<Album> albumRVModalArrayList, Fragment context) {
         this.albumRVModalArrayList = albumRVModalArrayList;
         this.context = context;
     }
@@ -34,6 +33,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         // inflating layout file on below line.
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_album_items, parent, false);
+        System.out.println("From Adapter: "+ getItemCount());
         return new ViewHolder(view);
     }
 
@@ -43,15 +43,14 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull AlbumAdapter.ViewHolder holder, int position) {
         // setting data to text view and image view on below line.
 
-            System.out.println(getItemCount());
-            Albums albumModal = albumRVModalArrayList.get(position);
-            System.out.println(albumModal.getPicture());
-            Picasso.get().load(albumModal.getPicture()).into(holder.albumIV);
+            Album albumModal = albumRVModalArrayList.get(position);
+            Picasso.get().load(albumModal.getAlbumImageUrl()).into(holder.albumIV);
             holder.albumNameTV.setText(albumModal.getName());
-            holder.albumDetailTV.setInputType(albumModal.getTotal_tracks());
+            System.out.println(albumModal.getTotalSong());
+            holder.albumTotalSongTV.setText(albumModal.getTotalSong()+" bài");
 
-        // adding click listener for album item on below line.
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        // adding click listener for album item on`  below line.
+//        holder.itemView.setOnClickListener(new V` iew.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                // on below line opening a new album detail
@@ -79,14 +78,14 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         // on below line creating variables
         // for image view and text view.
         private ImageView albumIV;
-        private TextView albumNameTV, albumDetailTV;
+        private TextView albumNameTV, albumTotalSongTV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // on below line initializing variables.
             albumIV = itemView.findViewById(R.id.album_img);
             albumNameTV = itemView.findViewById(R.id.tv_title_album);
-            albumDetailTV = itemView.findViewById(R.id.tv_album_number);
+            albumTotalSongTV = itemView.findViewById(R.id.tv_album_total);
         }
     }
 }
