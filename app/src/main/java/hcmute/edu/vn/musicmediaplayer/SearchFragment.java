@@ -6,6 +6,7 @@ import android.content.Context;
 
 import android.os.Bundle;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +17,9 @@ import android.view.ViewGroup;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -43,8 +46,9 @@ public class SearchFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private DatabaseReference myRef;
     RecyclerView recyclerViewtim;
+    androidx.appcompat.widget.Toolbar toolbar;
     SearchAdapter searchAdapter;
-    SearchView searchView;
+
 
     ArrayList<Song> listSong;
     private String mParam1;
@@ -74,7 +78,6 @@ public class SearchFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         System.out.println();
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -82,10 +85,13 @@ public class SearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         recyclerViewtim = view.findViewById(R.id.recyclerviewtimkiem);
+        toolbar = view.findViewById(R.id.toolbartimkiem);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         recyclerViewtim.setHasFixedSize(true);
 
 
-        myRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        myRef = FirebaseDatabase
+                .getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/")
                 .getReference("uploads");
         setHasOptionsMenu(true);
         recyclerViewtim.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -98,7 +104,6 @@ public class SearchFragment extends Fragment {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Song song = dataSnapshot.getValue(Song.class);
                     listSong.add(song);
@@ -111,9 +116,8 @@ public class SearchFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-
         });
-        System.out.println("listSize: " + listSong.size());
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return view;
     }
@@ -123,47 +127,29 @@ public class SearchFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_search, menu);
         MenuItem menuItem = menu.findItem(R.id.searchId);
-
-//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        searchView = (SearchView) menu.findItem(R.id.searchId).getActionView();
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//        searchView.setMaxWidth(Integer.MAX_VALUE);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menuItem.getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-
         SearchView searchView = (SearchView) menuItem.getActionView();
+
+        //tinh chỉnh searchView vào giữa toolbar
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
+        searchView.setLayoutParams(new Toolbar.LayoutParams(width, Toolbar.LayoutParams.WRAP_CONTENT));
+        searchView.setGravity(Gravity.CENTER);
+
+        // Đặt padding bên trái và bên phải cho ô tìm kiếm
+        searchView.setPadding(0, 0, 20, 0);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchAdapter.getFilter().filter(query);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String query) {
                 searchAdapter.getFilter().filter(query);
-                return true;
+                return false;
             }
         });
-
         super.onCreateOptionsMenu(menu, inflater);
     }
+
 }
-/*    private void MySearch(String query) {
-        myRef = FirebaseDatabase.getInstance().getReference();
-        FirebaseRecyclerOptions<Song> options = new FirebaseRecyclerOptions.Builder<Song>().
-                setQuery(myRef.child("uploads").orderByChild("sName")
-                        .startAt(query).endAt(query + "\uf8ff"),Song.class).build();
-        searchAdapter = new SearchAdapter(options);
-        searchAdapter.startListening();
-
-        recyclerViewtim.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerViewtim.setLayoutManager(linearLayoutManager);
-
-        recyclerViewtim.setAdapter(searchAdapter);
-        recyclerViewtim.setVisibility(View.VISIBLE);
-
-    }*/

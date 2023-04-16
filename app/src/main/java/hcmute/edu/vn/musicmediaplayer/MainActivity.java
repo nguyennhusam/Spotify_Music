@@ -34,16 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 mViewPager2;
     private BottomNavigationView mBottomNavigationView;
-    private SearchView searchView;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_search, menu);
-//
-//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        searchView = (SearchView) menu.findItem(R.id.searchId).getActionView();
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//        searchView.setMaxWidth(Integer.MAX_VALUE);
         return true;
     }
 
