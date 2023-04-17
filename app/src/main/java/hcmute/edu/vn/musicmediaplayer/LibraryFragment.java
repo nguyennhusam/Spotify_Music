@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -118,9 +119,11 @@ public class LibraryFragment extends Fragment {
             }
         });
 
+        // Read list album from database
         mDatabaseRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("albums");
         ArrayList<Album> albumRVModalArrayList = new ArrayList<>();
-        AlbumAdapter albumRVAdapter = new AlbumAdapter(albumRVModalArrayList, getContext());
+        FragmentManager  fragmentManager = getChildFragmentManager();
+        AlbumAdapter albumRVAdapter = new AlbumAdapter(albumRVModalArrayList, fragmentManager);
         albumsRV.setHasFixedSize(true);
         albumsRV.setAdapter(albumRVAdapter);
 

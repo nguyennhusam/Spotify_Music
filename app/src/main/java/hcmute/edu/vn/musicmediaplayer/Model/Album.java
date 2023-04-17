@@ -6,6 +6,13 @@ import java.util.List;
 public class Album {
     private String id;
     private String name;
+    private int totalSong;
+    private String description;
+    private String albumImageUrl;
+
+    private List<Song> songs;
+
+
 
     public String getDescription() {
         return description;
@@ -15,7 +22,6 @@ public class Album {
         this.description = description;
     }
 
-    private String description;
 
     public int getTotalSong() {
         return totalSong;
@@ -25,7 +31,6 @@ public class Album {
         this.totalSong = totalSong;
     }
 
-    private int totalSong;
 
     public String getAlbumImageUrl() {
         return albumImageUrl;
@@ -35,9 +40,7 @@ public class Album {
         this.albumImageUrl = albumImageUrl;
     }
 
-    private String albumImageUrl;
 
-    private List<Song> songs;
 
     public List<Song> getSongs() {
         return songs;

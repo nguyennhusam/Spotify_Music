@@ -3,6 +3,8 @@ package hcmute.edu.vn.musicmediaplayer.Adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +13,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
 
+import hcmute.edu.vn.musicmediaplayer.AlbumDetailFragment;
 import hcmute.edu.vn.musicmediaplayer.AlbumDetailsActivity;
 import hcmute.edu.vn.musicmediaplayer.LibraryFragment;
 import hcmute.edu.vn.musicmediaplayer.Model.Album;
@@ -27,10 +32,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     private ArrayList<Album> albumRVModalArrayList;
     private Context context;
 
+    private FragmentManager mFragmentManager;
+
+
     // creating a constructor.
-    public AlbumAdapter(ArrayList<Album> albumRVModalArrayList, Context context) {
+    public AlbumAdapter(ArrayList<Album> albumRVModalArrayList, FragmentManager context) {
         this.albumRVModalArrayList = albumRVModalArrayList;
-        this.context = context;
+        this.mFragmentManager = context;
     }
 
     @NonNull
@@ -57,9 +65,18 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, AlbumDetailsActivity.class);
-                    intent.putExtra("albumName",albumRVModalArrayList.get(position).getName());
-                    context.startActivity(intent);
+                    AlbumDetailFragment fragment = new AlbumDetailFragment();
+                    Bundle args = new Bundle();
+                    args.putString(AlbumDetailFragment.ARG_ALBUM,  albumRVModalArrayList.get(position).getId());
+                    fragment.setArguments(args);
+                    FragmentTransaction transaction = mFragmentManager.beginTransaction();
+                    transaction.replace(R.id.fragment_library, fragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+//                    Intent intent = new Intent(context, AlbumDetailsActivity.class);
+//                    intent.putExtra("albumId",albumRVModalArrayList.get(position).getId());
+//                    context.startActivity(intent);
                 }
             });
         // adding click listener for album item on`  below line.

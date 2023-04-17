@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".AlbumDetailFragment"
+        android:background="@color/darkPrimary"
+        android:gravity="center"
+        android:padding="10dp">
+
+        <!-- TODO: Update blank fragment layout -->
+        <ImageView
+            android:id="@+id/img_album_photo"
+            android:layout_width="402dp"
+            android:layout_height="199dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_album_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_album_photo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="#4E4444"
+            android:text="TextView"
+            android:textColor="#FEFEFE"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/tv_album_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_album_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="#4E4444"
+            android:text="TextView"
+            android:textColor="#FEFEFE"
+            android:textSize="16dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_songs"
+            android:layout_width="match_parent"
+            android:layout_height="403dp"
+            android:layout_below="@id/tv_album_description"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="10dp" />
+
+        <Button
+            android:id="@+id/buttonBack1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="17dp"
+            android:text="Button" />
+
+
+    </RelativeLayout>
+
+</ScrollView>
