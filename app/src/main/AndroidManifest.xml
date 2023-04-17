@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
+        android:name=".ServiceLocal.ChannelNotification"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,6 +16,7 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:targetApi="31">
         <service android:name=".ServiceLocal.ForcegroundServiceControl"/>
+        <receiver android:name=".ServiceLocal.BroadcastReceiverAction"/>
         <activity
             android:name=".Activity.PlayMusicActivity"/>
         <activity
