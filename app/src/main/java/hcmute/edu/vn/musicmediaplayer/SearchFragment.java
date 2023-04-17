@@ -92,7 +92,7 @@ public class SearchFragment extends Fragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         myRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/")
-                .getReference("uploads");
+                .getReference("hitSong");
         setHasOptionsMenu(true);
         recyclerViewtim.setLayoutManager(new LinearLayoutManager(getContext()));
         listSong = new ArrayList<>();

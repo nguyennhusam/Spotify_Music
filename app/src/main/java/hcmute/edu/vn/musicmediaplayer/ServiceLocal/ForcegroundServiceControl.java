@@ -9,6 +9,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -22,6 +24,9 @@ import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -33,11 +38,13 @@ public class ForcegroundServiceControl extends Service {
     public static final int ACTION_PAUSE = 1;
     public static final int ACTION_RESUME = 2;
     public static final int ACTION_CLEAR = 3;
+    public static final int ACTION_DURATION = 4;
     private boolean isPlaying;
     private MediaPlayer mediaPlayer;
 
     private ArrayList<Song> mangbaihat = new ArrayList<>();
-    private int positionPlayer = 0;
+
+    private int positionPlayer = 0, duration = 0, seekToTime = 0, curentime = 0;
 
 
     @Override
@@ -64,6 +71,7 @@ public class ForcegroundServiceControl extends Service {
             CompleteAndStart();
         }
         int actionMusic = intent.getIntExtra("action_music_service", 0);
+        seekToTime = intent.getIntExtra("duration", 0);
         //System.out.println("intent null");
         handleActionMusic(actionMusic);
         return START_NOT_STICKY;
@@ -76,15 +84,18 @@ public class ForcegroundServiceControl extends Service {
 
     private void startMusic(String linkBaiHat) {
         if (mediaPlayer != null) {
-
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
-
         new playMP3().onPostExecute(linkBaiHat);
         isPlaying = true;
 
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.stop();
     }
 
     private void CompleteAndStart() {
@@ -104,6 +115,9 @@ public class ForcegroundServiceControl extends Service {
             case ACTION_CLEAR:
                 stopSelf();
                 sendActonToPlayNhacActivity(ACTION_CLEAR);
+                break;
+            case ACTION_DURATION:
+                mediaPlayer.seekTo(seekToTime);
                 break;
         }
     }
@@ -134,6 +148,19 @@ public class ForcegroundServiceControl extends Service {
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.layout_notification_playmusic);
         remoteViews.setTextViewText(R.id.tv_title_song, song.getsName());
         remoteViews.setTextViewText(R.id.tv_single_song, song.getsArtist());
+        Picasso.get().load(song.getsImageUrl())
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        remoteViews.setImageViewBitmap(R.id.img_song,bitmap);
+                    }
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                    }
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    }
+                });
 
         remoteViews.setImageViewResource(R.id.img_play_or_pause, R.drawable.baseline_pause_circle_24);
 
@@ -169,7 +196,8 @@ public class ForcegroundServiceControl extends Service {
             intent.putExtra("status_player", isPlaying);
             intent.putExtra("action_music", action);
             intent.putExtra("position_music", positionPlayer);
-
+            intent.putExtra("duration_music", duration);
+            intent.putExtra("seektomusic", curentime);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
     }
