@@ -3,7 +3,6 @@ package hcmute.edu.vn.musicmediaplayer;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentStateManagerControl;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
@@ -25,7 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-import hcmute.edu.vn.musicmediaplayer.Model.Albums;
+import hcmute.edu.vn.musicmediaplayer.Model.Album;
 
 public class MainActivity extends AppCompatActivity {
 
