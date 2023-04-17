@@ -1,6 +1,7 @@
 package hcmute.edu.vn.musicmediaplayer.Model;
 
 
+<<<<<<< HEAD
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 
 public class Song implements Parcelable {
 
+=======
+>>>>>>> 4079818286b4719251f91d6e0148270bceffd031
     private String songId;
     private String sName;
     private String sSongUrl;
@@ -38,6 +41,7 @@ public class Song implements Parcelable {
     }
 
 
+<<<<<<< HEAD
     protected Song(Parcel in) {
         songId = in.readString();
         sName = in.readString();
@@ -58,6 +62,8 @@ public class Song implements Parcelable {
         }
     };
 
+=======
+>>>>>>> 4079818286b4719251f91d6e0148270bceffd031
     public String getSongId() {
         return songId;
     }

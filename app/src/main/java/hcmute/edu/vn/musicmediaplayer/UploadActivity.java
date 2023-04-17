@@ -236,6 +236,7 @@ public class UploadActivity extends AppCompatActivity {
                 upload.setsImageUrl(imageUrl.toString());
 
                 String uploadId = mDatabaseRef.push().getKey();
+                upload.setSongId(uploadId);
                 boolean b = mDatabaseRef.child(uploadId).setValue(upload).isSuccessful();
                 Toast.makeText(UploadActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
 

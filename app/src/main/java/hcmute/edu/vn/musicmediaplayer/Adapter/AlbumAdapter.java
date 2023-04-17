@@ -1,5 +1,8 @@
-package hcmute.edu.vn.musicmediaplayer;
+package hcmute.edu.vn.musicmediaplayer.Adapter;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +17,18 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import hcmute.edu.vn.musicmediaplayer.AlbumDetailsActivity;
+import hcmute.edu.vn.musicmediaplayer.LibraryFragment;
 import hcmute.edu.vn.musicmediaplayer.Model.Album;
+import hcmute.edu.vn.musicmediaplayer.R;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
     // creating variables for array list and context
     private ArrayList<Album> albumRVModalArrayList;
-    private Fragment context;
+    private Context context;
 
     // creating a constructor.
-    public AlbumAdapter(ArrayList<Album> albumRVModalArrayList, Fragment context) {
+    public AlbumAdapter(ArrayList<Album> albumRVModalArrayList, Context context) {
         this.albumRVModalArrayList = albumRVModalArrayList;
         this.context = context;
     }
@@ -40,7 +46,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
 
 
     @Override
-    public void onBindViewHolder(@NonNull AlbumAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AlbumAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         // setting data to text view and image view on below line.
 
             Album albumModal = albumRVModalArrayList.get(position);
@@ -48,7 +54,14 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             holder.albumNameTV.setText(albumModal.getName());
             System.out.println(albumModal.getTotalSong());
             holder.albumTotalSongTV.setText(albumModal.getTotalSong()+" bài");
-
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, AlbumDetailsActivity.class);
+                    intent.putExtra("albumName",albumRVModalArrayList.get(position).getName());
+                    context.startActivity(intent);
+                }
+            });
         // adding click listener for album item on`  below line.
 //        holder.itemView.setOnClickListener(new V` iew.OnClickListener() {
 //            @Override

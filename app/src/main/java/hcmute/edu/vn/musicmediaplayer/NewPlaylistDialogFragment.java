@@ -138,6 +138,7 @@ public class NewPlaylistDialogFragment extends DialogFragment {
             album.setAlbumImageUrl("https://cdn-icons-png.flaticon.com/512/25/25667.png");
 
             String albumId = mDatabaseRef.push().getKey();
+            album.setId(albumId);
             mDatabaseRef.child(albumId).setValue(album);
         }
     }

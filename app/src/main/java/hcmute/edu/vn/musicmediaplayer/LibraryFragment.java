@@ -2,6 +2,7 @@ package hcmute.edu.vn.musicmediaplayer;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,9 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import hcmute.edu.vn.musicmediaplayer.Adapter.AlbumAdapter;
 import hcmute.edu.vn.musicmediaplayer.Model.Album;
 import hcmute.edu.vn.musicmediaplayer.Model.Song;
 
@@ -116,36 +120,69 @@ public class LibraryFragment extends Fragment {
 
         mDatabaseRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("albums");
         ArrayList<Album> albumRVModalArrayList = new ArrayList<>();
-        AlbumAdapter albumRVAdapter = new AlbumAdapter(albumRVModalArrayList, this);
+        AlbumAdapter albumRVAdapter = new AlbumAdapter(albumRVModalArrayList, getContext());
         albumsRV.setHasFixedSize(true);
         albumsRV.setAdapter(albumRVAdapter);
 
-        final boolean[] isFirstTime = {true};
-
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+//        final boolean[] isFirstTime = {true};
+//        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+//                    Album album = dataSnapshot.getValue(Album.class);
+//                    albumRVModalArrayList.add(album);
+//                }
+//                albumRVAdapter.notifyDataSetChanged();
+//
+////                if (isFirstTime[0]) {
+////                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+////                        Album album = dataSnapshot.getValue(Album.class);
+////                        albumRVModalArrayList.add(album);
+////                    }
+////                    albumRVAdapter.notifyDataSetChanged();
+////                    isFirstTime[0] = false;
+////                } else {
+////                    Album newAlbum = snapshot.getValue(Album.class);
+////                    albumRVModalArrayList.add(newAlbum);
+////                    int insertedPosition = albumRVModalArrayList.size() - 1;
+////                    albumRVAdapter.notifyItemRangeInserted(insertedPosition, 1);
+////                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//            }
+//
+//        });
+        mDatabaseRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Album album = snapshot.getValue(Album.class);
+                albumRVModalArrayList.add(album);
 
-                if (isFirstTime[0]) {
-                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        Album album = dataSnapshot.getValue(Album.class);
-                        albumRVModalArrayList.add(album);
-                    }
-                    albumRVAdapter.notifyDataSetChanged();
-                    isFirstTime[0] = false;
-                } else {
-                    Album newAlbum = snapshot.getValue(Album.class);
-                    albumRVModalArrayList.add(newAlbum);
-                    int insertedPosition = albumRVModalArrayList.size() - 1;
-                    albumRVAdapter.notifyItemRangeInserted(insertedPosition, 1);
-                }
+                albumRVAdapter.notifyDataSetChanged();
 
             }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-
         });
 
         return v;

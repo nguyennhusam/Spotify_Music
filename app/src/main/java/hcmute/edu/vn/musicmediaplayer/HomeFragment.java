@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -19,6 +17,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
 import java.util.List;
 
+import hcmute.edu.vn.musicmediaplayer.Adapter.PhotoAdapter;
 import hcmute.edu.vn.musicmediaplayer.Model.Photo;
 import hcmute.edu.vn.musicmediaplayer.TabFragmentHome.GenresFragment;
 import hcmute.edu.vn.musicmediaplayer.TabFragmentHome.HotMusicFragment;
