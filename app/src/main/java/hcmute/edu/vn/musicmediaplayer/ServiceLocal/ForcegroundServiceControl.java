@@ -50,7 +50,8 @@ public class ForcegroundServiceControl extends Service {
                 clearArray();
                 mangbaihat = intent.getParcelableArrayListExtra("obj_song_baihat");
             }
-            System.out.println("intent #null: "+mangbaihat.get(positionPlayer).getsSongUrl());
+            System.out.println("intent #null url: "+mangbaihat.get(positionPlayer).getsSongUrl());
+            System.out.println("intent #null image: "+mangbaihat.get(positionPlayer).getsImageUrl());
             startMusic(mangbaihat.get(positionPlayer).getsSongUrl());
         }
         //System.out.println("intent null");
