@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,7 +44,11 @@ public class SearchFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private DatabaseReference myRef;
     RecyclerView recyclerViewtim;
+<<<<<<< HEAD
 
+=======
+    androidx.appcompat.widget.Toolbar toolbar;
+>>>>>>> bb8958c486cabcab89a3b457b1f198264b673b3f
     SearchAdapter searchAdapter;
 
     ArrayList<Song> listSong;
@@ -79,6 +86,8 @@ public class SearchFragment extends Fragment {
 
         recyclerViewtim = view.findViewById(R.id.recyclerviewtimkiem);
         recyclerViewtim.setHasFixedSize(true);
+        toolbar = view.findViewById(R.id.toolbartimkiem);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         myRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/")
                 .getReference("uploads");
@@ -104,7 +113,8 @@ public class SearchFragment extends Fragment {
             }
 
         });
-        System.out.println("listSize: "+listSong.size());
+
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return view;
     }
@@ -113,9 +123,17 @@ public class SearchFragment extends Fragment {
         inflater.inflate(R.menu.menu_search, menu);
         MenuItem menuItem = menu.findItem(R.id.searchId);
         SearchView searchView = (SearchView) menuItem.getActionView();
+        //tinh chỉnh searchView vào giữa toolbar
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
+        searchView.setLayoutParams(new Toolbar.LayoutParams(width, Toolbar.LayoutParams.WRAP_CONTENT));
+        searchView.setGravity(Gravity.CENTER);
+
+        // Đặt padding bên trái và bên phải cho ô tìm kiếm
+        searchView.setPadding(0, 0, 20, 0);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchAdapter.getFilter().filter(query);
                 return false;
             }
 
@@ -129,3 +147,7 @@ public class SearchFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> bb8958c486cabcab89a3b457b1f198264b673b3f

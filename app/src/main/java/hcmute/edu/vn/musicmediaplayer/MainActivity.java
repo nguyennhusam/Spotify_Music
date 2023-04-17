@@ -6,9 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.viewpager2.widget.ViewPager2;
 
+<<<<<<< HEAD
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+=======
+
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
+>>>>>>> bb8958c486cabcab89a3b457b1f198264b673b3f
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

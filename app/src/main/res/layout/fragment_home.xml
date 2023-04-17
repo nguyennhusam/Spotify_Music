@@ -11,8 +11,7 @@
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5">
+        android:layout_height="220dp">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/img_slider_viewPager2"
@@ -29,22 +28,20 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_home_fragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:itemIconTint="@color/green"
+        app:itemTextColor="@color/green"
+        app:menu="@menu/home_menu_content"
+        />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation_home_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            app:menu="@menu/home_menu_content"
-            app:itemTextColor="@color/green"
-            app:itemIconTint="@color/green"/>
-
-
-
-    </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/frame_fragment_tab_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
 
 </LinearLayout>
