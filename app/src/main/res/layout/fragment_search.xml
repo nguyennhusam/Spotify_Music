@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
-    android:background="#41644A">
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbartimkiem"
@@ -16,6 +16,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewtimkiem"
+        android:background="#41644A"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbartimkiem"

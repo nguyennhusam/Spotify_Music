@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -97,6 +98,10 @@ public class SearchFragment extends Fragment {
         listSong = new ArrayList<>();
         searchAdapter = new SearchAdapter(getContext(), listSong);
         recyclerViewtim.setAdapter(searchAdapter);
+
+        //thanh chắn ngăn cách giữa các item
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this.getContext(),DividerItemDecoration.VERTICAL);
+        recyclerViewtim.addItemDecoration(itemDecoration);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
