@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".HomeFragment"
+    android:background="#41644A">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbartimkiem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical"
         app:titleTextColor="#FFF" />
 
     <androidx.recyclerview.widget.RecyclerView

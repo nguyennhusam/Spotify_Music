@@ -105,7 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/menu_navigation"
-        android:background="@color/green"
+        android:background="#263A29"
         app:itemTextColor="@color/color_navigation"
         app:itemIconTint="@color/color_navigation"/>
 

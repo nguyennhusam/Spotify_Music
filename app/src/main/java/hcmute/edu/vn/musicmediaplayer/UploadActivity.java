@@ -90,7 +90,7 @@ public class UploadActivity extends AppCompatActivity {
         audioStorageRef = FirebaseStorage.getInstance().getReference("audio");
         imageStorageRef = FirebaseStorage.getInstance().getReference("image");
 
-        mDatabaseRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("uploads");
+        mDatabaseRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("hitSong");
 
         mButtonSelectImage.setOnClickListener(new View.OnClickListener() {
             @Override
