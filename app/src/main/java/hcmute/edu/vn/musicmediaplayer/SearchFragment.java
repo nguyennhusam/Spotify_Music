@@ -41,6 +41,7 @@ public class SearchFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private DatabaseReference myRef;
     RecyclerView recyclerViewtim;
+
     SearchAdapter searchAdapter;
 
     ArrayList<Song> listSong;
@@ -128,19 +129,3 @@ public class SearchFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 }
-/*    private void MySearch(String query) {
-        myRef = FirebaseDatabase.getInstance().getReference();
-        FirebaseRecyclerOptions<Song> options = new FirebaseRecyclerOptions.Builder<Song>().
-                setQuery(myRef.child("uploads").orderByChild("sName")
-                        .startAt(query).endAt(query + "\uf8ff"),Song.class).build();
-        searchAdapter = new SearchAdapter(options);
-        searchAdapter.startListening();
-
-        recyclerViewtim.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerViewtim.setLayoutManager(linearLayoutManager);
-
-        recyclerViewtim.setAdapter(searchAdapter);
-        recyclerViewtim.setVisibility(View.VISIBLE);
-
-    }*/
