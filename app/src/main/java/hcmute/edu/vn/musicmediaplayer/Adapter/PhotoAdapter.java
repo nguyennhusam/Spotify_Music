@@ -1,4 +1,4 @@
-package hcmute.edu.vn.musicmediaplayer;
+package hcmute.edu.vn.musicmediaplayer.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import hcmute.edu.vn.musicmediaplayer.Model.Photo;
+import hcmute.edu.vn.musicmediaplayer.R;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder>{
 

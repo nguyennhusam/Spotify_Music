@@ -2,7 +2,7 @@ package hcmute.edu.vn.musicmediaplayer.Model;
 
 public class Song {
 
-    private int songId;
+    private String songId;
     private String sName;
     private String sSongUrl;
     private String sArtist;
@@ -31,11 +31,11 @@ public class Song {
     }
 
 
-    public int getSongId() {
+    public String getSongId() {
         return songId;
     }
 
-    public void setSongId(int songId) {
+    public void setSongId(String songId) {
         this.songId = songId;
     }
 
