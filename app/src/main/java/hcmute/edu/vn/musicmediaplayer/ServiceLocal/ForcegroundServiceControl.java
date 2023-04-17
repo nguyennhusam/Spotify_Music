@@ -8,12 +8,14 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
+
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -124,6 +126,7 @@ public class ForcegroundServiceControl extends Service {
         }
     }
 
+
     private void sendNotification(Song song) {
         Intent intent = new Intent(this, ForcegroundServiceControl.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -131,6 +134,7 @@ public class ForcegroundServiceControl extends Service {
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.layout_notification_playmusic);
         remoteViews.setTextViewText(R.id.tv_title_song, song.getsName());
         remoteViews.setTextViewText(R.id.tv_single_song, song.getsArtist());
+
         remoteViews.setImageViewResource(R.id.img_play_or_pause, R.drawable.baseline_pause_circle_24);
 
         if(isPlaying){
@@ -143,8 +147,6 @@ public class ForcegroundServiceControl extends Service {
             remoteViews.setImageViewResource(R.id.img_play_or_pause, R.drawable.baseline_play_circle_24);
         }
         remoteViews.setOnClickPendingIntent(R.id.img_clear, getPendingIntent(this,ACTION_CLEAR));
-
-
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.spotify_logo)
