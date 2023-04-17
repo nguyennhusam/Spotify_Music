@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:targetApi="31">
+        <service android:name=".ServiceLocal.ForcegroundServiceControl"/>
+        <activity
+            android:name=".Activity.PlayMusicActivity"/>
         <activity
             android:name=".AlbumDetailsActivity"
             android:exported="false" />

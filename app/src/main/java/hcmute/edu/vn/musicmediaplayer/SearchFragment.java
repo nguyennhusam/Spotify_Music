@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hcmute.edu.vn.musicmediaplayer.Adapter.SearchAdapter;
+import hcmute.edu.vn.musicmediaplayer.Model.Album;
 import hcmute.edu.vn.musicmediaplayer.Model.Song;
 
 public class SearchFragment extends Fragment {
@@ -44,11 +45,9 @@ public class SearchFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private DatabaseReference myRef;
     RecyclerView recyclerViewtim;
-<<<<<<< HEAD
 
-=======
     androidx.appcompat.widget.Toolbar toolbar;
->>>>>>> bb8958c486cabcab89a3b457b1f198264b673b3f
+
     SearchAdapter searchAdapter;
 
     ArrayList<Song> listSong;
@@ -82,6 +81,8 @@ public class SearchFragment extends Fragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         recyclerViewtim = view.findViewById(R.id.recyclerviewtimkiem);
@@ -102,6 +103,7 @@ public class SearchFragment extends Fragment {
 
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Song song = dataSnapshot.getValue(Song.class);
+
                     listSong.add(song);
                 }
                 searchAdapter.setFullList(new ArrayList<>(listSong));
@@ -147,7 +149,4 @@ public class SearchFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> bb8958c486cabcab89a3b457b1f198264b673b3f

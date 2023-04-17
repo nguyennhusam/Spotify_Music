@@ -59,7 +59,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewhold
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PlayMusicActivity.class);
-                intent.putExtra("play_music_from_search", position);
+
+                //truyền vào intent một Song vị trí position
+                intent.putExtra("play_music_from_search", listSong.get(position));
+                System.out.println("ps: "+position);
+                System.out.println("url: "+listSong.get(position).getsSongUrl());
+                System.out.println("image: "+listSong.get(position).getsImageUrl());
                 context.startActivity(intent);
             }
         });
@@ -88,7 +93,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewhold
                     templist.addAll(filteredList);
                 } else {
                     for (Song item : filteredList) {
-                        System.out.println(" name:  "+item.getsName()+" - searchText: "+ searchText);
+
                         if(item.getsName() != null) {
                             if (item.getsName().toLowerCase().contains(searchText)) {
                                 templist.add(item);

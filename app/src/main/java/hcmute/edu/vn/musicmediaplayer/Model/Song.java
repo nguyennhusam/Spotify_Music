@@ -1,8 +1,15 @@
 package hcmute.edu.vn.musicmediaplayer.Model;
 
-public class Song {
 
-    private int songId;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+
+public class Song implements Parcelable {
+
+    private String songId;
     private String sName;
     private String sSongUrl;
     private String sArtist;
@@ -31,11 +38,31 @@ public class Song {
     }
 
 
-    public int getSongId() {
+    protected Song(Parcel in) {
+        songId = in.readString();
+        sName = in.readString();
+        sSongUrl = in.readString();
+        sArtist = in.readString();
+        sImageUrl = in.readString();
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
+
+    public String getSongId() {
         return songId;
     }
 
-    public void setSongId(int songId) {
+    public void setSongId(String songId) {
         this.songId = songId;
     }
 
@@ -69,5 +96,19 @@ public class Song {
 
     public void setsImageUrl(String sImageUrl) {
         this.sImageUrl = sImageUrl;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(songId);
+        parcel.writeString(sName);
+        parcel.writeString(sArtist);
+        parcel.writeString(sImageUrl);
+        parcel.writeString(sSongUrl);
     }
 }
