@@ -1,23 +1,38 @@
 package hcmute.edu.vn.musicmediaplayer;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import hcmute.edu.vn.musicmediaplayer.Model.Photo;
+import hcmute.edu.vn.musicmediaplayer.TabFragmentHome.GenresFragment;
+import hcmute.edu.vn.musicmediaplayer.TabFragmentHome.HotMusicFragment;
+import hcmute.edu.vn.musicmediaplayer.TabFragmentHome.SingersFragment;
+import hcmute.edu.vn.musicmediaplayer.TabFragmentHome.Top10Fragment;
 import me.relex.circleindicator.CircleIndicator3;
 
 public class HomeFragment extends Fragment {
+
+    BottomNavigationView bottomNavigationView;
+    HotMusicFragment hotMusicFragment = new HotMusicFragment();
+    SingersFragment singersFragment = new SingersFragment();
+    GenresFragment genresFragment = new GenresFragment();
+    Top10Fragment top10Fragment = new Top10Fragment();
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -62,7 +77,9 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +89,31 @@ public class HomeFragment extends Fragment {
 
         imgSliderViewPager2 = v.findViewById(R.id.img_slider_viewPager2);
         mCircleIndicator3 = v.findViewById(R.id.img_slider_circleIndicator3);
+
+
+        bottomNavigationView = v.findViewById(R.id.bottom_navigation_home_fragment);
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_tab_home,hotMusicFragment).commit();
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.hot_music:
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_tab_home,hotMusicFragment).commit();
+                        return true;
+                    case R.id.singers:
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_tab_home,singersFragment).commit();
+                        return true;
+                    case R.id.genres:
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_tab_home,genresFragment).commit();
+                        return true;
+                    case R.id.top10:
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_tab_home,top10Fragment).commit();
+                        return true;
+                }
+                return false;
+            }
+        });
 
 
         mListPhoto = getListPhoto();
@@ -113,4 +155,5 @@ public class HomeFragment extends Fragment {
         super.onResume();
         mHandler.postDelayed(mRunable, 3000);
     }
+
 }
