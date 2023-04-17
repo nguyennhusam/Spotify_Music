@@ -1,53 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="#41644A"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <RelativeLayout
-        android:id="@+id/menu_singers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp">
-
-        <TextView
-            android:id="@+id/tv_singers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:text="Singers"
-            android:textColor="@color/black"
-            android:textSize="30dp" />
-    </RelativeLayout>
 
     <LinearLayout
-        android:padding="10dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
         <TextView
             android:id="@+id/tv_vietnam_singer"
+            android:padding="10px"
+            android:layout_marginTop="20px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="25dp"
-            android:text="VIET NAM"/>
+            android:textColor="@color/white"
+            android:text="Danh sách Nghệ Sĩ"/>
+
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/layout_sontung"
+                android:padding="10px"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image_view_sontung"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/sontungmpt"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    android:text="Sơn tùng" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/layout_mono"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image_view_mono"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/mono"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"
+                    android:text="Mono" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_hoangdung"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image_view_hoangdung"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/hoangdung"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"
+                    android:text="Hoàng Dũng" />
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_others_singer"
+            android:padding="10px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="25dp"
-            android:text="OTHERS"/>
+            android:textColor="@color/white"
+            android:text="Khác"/>
+
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/layout_justinbieber"
+                android:padding="10px"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image_view_justinbieber"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/justinbieber"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    android:text="Justin Bieber" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/layout_taylorswift"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image_view_taylorswift"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/taylorswift"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"
+                    android:text="Taylor Swift" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_charlieputh"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image_view_charlieputh"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/charlieputh"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"
+                    android:text="Charlie Puth" />
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
 
 
     </LinearLayout>
+</ScrollView>
 
-
-
-</LinearLayout>
