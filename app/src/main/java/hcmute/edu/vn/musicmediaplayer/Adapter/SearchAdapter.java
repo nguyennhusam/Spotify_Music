@@ -1,5 +1,7 @@
 package hcmute.edu.vn.musicmediaplayer.Adapter;
 
+
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,14 +15,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import hcmute.edu.vn.musicmediaplayer.Activity.PlayMusicActivity;
 import hcmute.edu.vn.musicmediaplayer.Model.Song;
 import hcmute.edu.vn.musicmediaplayer.R;
 
@@ -58,7 +58,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewhold
         holder.imganhtimkiem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(context, PlayMusicActivity.class);
 
+                //truyền vào intent một Song vị trí position
+                intent.putExtra("play_music_from_search", listSong.get(position));
+                context.startActivity(intent);
             }
         });
     }
@@ -86,7 +90,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewhold
                     templist.addAll(filteredList);
                 } else {
                     for (Song item : filteredList) {
-                        System.out.println(" name:  "+item.getsName()+" - searchText: "+ searchText);
+
                         if(item.getsName() != null) {
                             if (item.getsName().toLowerCase().contains(searchText)) {
                                 templist.add(item);

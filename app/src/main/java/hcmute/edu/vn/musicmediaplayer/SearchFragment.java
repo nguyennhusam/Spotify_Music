@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hcmute.edu.vn.musicmediaplayer.Adapter.SearchAdapter;
+import hcmute.edu.vn.musicmediaplayer.Model.Album;
 import hcmute.edu.vn.musicmediaplayer.Model.Song;
 
 public class SearchFragment extends Fragment {
@@ -44,7 +46,9 @@ public class SearchFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private DatabaseReference myRef;
     RecyclerView recyclerViewtim;
+
     androidx.appcompat.widget.Toolbar toolbar;
+
     SearchAdapter searchAdapter;
 
     ArrayList<Song> listSong;
@@ -78,6 +82,8 @@ public class SearchFragment extends Fragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         recyclerViewtim = view.findViewById(R.id.recyclerviewtimkiem);
@@ -92,12 +98,17 @@ public class SearchFragment extends Fragment {
         listSong = new ArrayList<>();
         searchAdapter = new SearchAdapter(getContext(), listSong);
         recyclerViewtim.setAdapter(searchAdapter);
+
+        //thanh chắn ngăn cách giữa các item
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this.getContext(),DividerItemDecoration.VERTICAL);
+        recyclerViewtim.addItemDecoration(itemDecoration);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Song song = dataSnapshot.getValue(Song.class);
+
                     listSong.add(song);
                 }
                 searchAdapter.setFullList(new ArrayList<>(listSong));
