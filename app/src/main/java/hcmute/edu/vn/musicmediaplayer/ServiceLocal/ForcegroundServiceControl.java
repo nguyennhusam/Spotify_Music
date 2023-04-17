@@ -45,13 +45,11 @@ public class ForcegroundServiceControl extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
-            System.out.println("intent #null");
             if (intent.hasExtra("obj_song_baihat")) {
                 clearArray();
                 mangbaihat = intent.getParcelableArrayListExtra("obj_song_baihat");
             }
-            System.out.println("intent #null url: "+mangbaihat.get(positionPlayer).getsSongUrl());
-            System.out.println("intent #null image: "+mangbaihat.get(positionPlayer).getsImageUrl());
+
             startMusic(mangbaihat.get(positionPlayer).getsSongUrl());
         }
         //System.out.println("intent null");
@@ -65,16 +63,14 @@ public class ForcegroundServiceControl extends Service {
 
     private void startMusic(String linkBaiHat) {
         if (mediaPlayer != null) {
-            System.out.println("media null");
+
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
         Uri uri = Uri.parse(linkBaiHat);
-        System.out.println("uri: " + uri);
         mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-        System.out.println("uri: " + uri);
-        System.out.println("link: " + linkBaiHat);
+
         mediaPlayer.start();
 //        new playMP3().onPostExecute(linkBaiHat);
         isPlaying = true;

@@ -62,9 +62,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewhold
 
                 //truyền vào intent một Song vị trí position
                 intent.putExtra("play_music_from_search", listSong.get(position));
-                System.out.println("ps: "+position);
-                System.out.println("url: "+listSong.get(position).getsSongUrl());
-                System.out.println("image: "+listSong.get(position).getsImageUrl());
                 context.startActivity(intent);
             }
         });
