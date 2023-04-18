@@ -1,13 +1,10 @@
 package hcmute.edu.vn.musicmediaplayer.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.view.Window;
 
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,36 +16,32 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import hcmute.edu.vn.musicmediaplayer.Adapter.SearchAdapter;
 import hcmute.edu.vn.musicmediaplayer.Model.Song;
 import hcmute.edu.vn.musicmediaplayer.R;
 
-
-public class SingerActivity extends AppCompatActivity {
+public class GenresActivity extends AppCompatActivity {
 
     private DatabaseReference myRef;
-    RecyclerView recyclerViewTrackMono;
-    SearchAdapter trackMonoAdapter;
+    RecyclerView recyclerViewIndieMusic;
+    SearchAdapter indieMusicAdapter;
     ArrayList<Song> listSong;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_singer);
+        setContentView(R.layout.activity_genres);
 
-
-        recyclerViewTrackMono = findViewById(R.id.recycleview_trackmono);
+        recyclerViewIndieMusic = findViewById(R.id.recycleview_indiemusic);
         myRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/")
-                .getReference("trackMono");
-        recyclerViewTrackMono.setHasFixedSize(true);
-        recyclerViewTrackMono.setLayoutManager(new LinearLayoutManager(this));
+                .getReference("indieMusic");
+        recyclerViewIndieMusic.setHasFixedSize(true);
+        recyclerViewIndieMusic.setLayoutManager(new LinearLayoutManager(this));
         listSong = new ArrayList<>();
-        trackMonoAdapter = new SearchAdapter(this,listSong);
-        recyclerViewTrackMono.setAdapter(trackMonoAdapter);
+        indieMusicAdapter = new SearchAdapter(this,listSong);
+        recyclerViewIndieMusic.setAdapter(indieMusicAdapter);
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -57,7 +50,7 @@ public class SingerActivity extends AppCompatActivity {
                     Song song = dataSnapshot.getValue(Song.class);
                     listSong.add(song);
                 }
-                trackMonoAdapter.notifyDataSetChanged();
+                indieMusicAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -66,5 +59,4 @@ public class SingerActivity extends AppCompatActivity {
             }
         });
     }
-
 }

@@ -26,7 +26,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/layou_nhacrock"
+            android:id="@+id/layout_nhacrock"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -48,7 +48,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layou_nhacindie"
+            android:id="@+id/layout_nhacindie"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

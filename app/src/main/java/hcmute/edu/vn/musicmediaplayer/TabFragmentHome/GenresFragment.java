@@ -1,15 +1,20 @@
 package hcmute.edu.vn.musicmediaplayer.TabFragmentHome;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 
+import hcmute.edu.vn.musicmediaplayer.Activity.GenresActivity;
 import hcmute.edu.vn.musicmediaplayer.R;
 
 public class GenresFragment extends Fragment {
+
+    LinearLayout layoutIndieMusic;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -42,7 +47,17 @@ public class GenresFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_genres, container, false);
+        View view = inflater.inflate(R.layout.fragment_genres, container, false);
+
+        layoutIndieMusic = view.findViewById(R.id.layout_nhacindie);
+        layoutIndieMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GenresActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        return view;
     }
 }
