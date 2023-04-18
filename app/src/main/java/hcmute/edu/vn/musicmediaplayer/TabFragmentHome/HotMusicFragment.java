@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +57,9 @@ public class HotMusicFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_hotmusic,container, false);
         recyclerViewHotMusic = view.findViewById(R.id.recyclerviewhitsongs);
         recyclerViewHotMusic.setHasFixedSize(true);
+        //thanh chắn ngăn cách giữa các item
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this.getContext(),DividerItemDecoration.VERTICAL);
+        recyclerViewHotMusic.addItemDecoration(itemDecoration);
 
         myRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/")
                 .getReference("hitSong");

@@ -19,10 +19,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:targetApi="31">
-        <service android:name=".ServiceLocal.ForcegroundServiceControl"/>
-        <receiver android:name=".ServiceLocal.BroadcastReceiverAction"/>
         <activity
-            android:name=".Activity.PlayMusicActivity"/>
+            android:name=".Activity.GenresActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".Activity.SingerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_singer"
+            android:theme="@style/NoActionBar" />
+
+        <service android:name=".ServiceLocal.ForcegroundServiceControl" />
+
+        <receiver android:name=".ServiceLocal.BroadcastReceiverAction" />
+
+        <activity android:name=".Activity.PlayMusicActivity" />
         <activity
             android:name=".AlbumDetailsActivity"
             android:exported="false" />

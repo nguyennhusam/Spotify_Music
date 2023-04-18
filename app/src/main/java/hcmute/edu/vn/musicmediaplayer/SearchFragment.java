@@ -82,8 +82,6 @@ public class SearchFragment extends Fragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         recyclerViewtim = view.findViewById(R.id.recyclerviewtimkiem);
@@ -92,7 +90,7 @@ public class SearchFragment extends Fragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         myRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/")
-                .getReference("uploads");
+                .getReference("hitSong");
         setHasOptionsMenu(true);
         recyclerViewtim.setLayoutManager(new LinearLayoutManager(getContext()));
         listSong = new ArrayList<>();

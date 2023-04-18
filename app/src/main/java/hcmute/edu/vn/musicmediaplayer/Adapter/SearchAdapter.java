@@ -4,6 +4,7 @@ package hcmute.edu.vn.musicmediaplayer.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewhold
                 Intent intent = new Intent(context, PlayMusicActivity.class);
 
                 //truyền vào intent một Song vị trí position
-                intent.putExtra("play_music_from_search", listSong.get(position));
+//                intent.putExtra("play_music_from_search", listSong.get(position));
+                Bundle bundle = new Bundle();
+                intent.putExtra("list_play_music_from_search", new ArrayList<>(listSong));
+                intent.putExtras(bundle);
+
                 context.startActivity(intent);
             }
         });

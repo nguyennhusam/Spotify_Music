@@ -9,9 +9,12 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -22,9 +25,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import hcmute.edu.vn.musicmediaplayer.Model.Song;
 import hcmute.edu.vn.musicmediaplayer.R;
@@ -33,11 +40,15 @@ public class ForcegroundServiceControl extends Service {
     public static final int ACTION_PAUSE = 1;
     public static final int ACTION_RESUME = 2;
     public static final int ACTION_CLEAR = 3;
+    public static final int ACTION_DURATION = 4;
+    public static final int ACTION_NEXT = 5;
+    public static final int ACTION_PREVIOUS = 6;
     private boolean isPlaying;
     private MediaPlayer mediaPlayer;
 
     private ArrayList<Song> mangbaihat = new ArrayList<>();
-    private int positionPlayer = 0;
+
+    private int positionPlayer = 0, duration = 0, seekToTime = 0, curentime = 0;
 
 
     @Override
@@ -64,6 +75,7 @@ public class ForcegroundServiceControl extends Service {
             CompleteAndStart();
         }
         int actionMusic = intent.getIntExtra("action_music_service", 0);
+        seekToTime = intent.getIntExtra("duration", 0);
         //System.out.println("intent null");
         handleActionMusic(actionMusic);
         return START_NOT_STICKY;
@@ -76,15 +88,21 @@ public class ForcegroundServiceControl extends Service {
 
     private void startMusic(String linkBaiHat) {
         if (mediaPlayer != null) {
-
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
-
         new playMP3().onPostExecute(linkBaiHat);
         isPlaying = true;
+        duration = mediaPlayer.getDuration();
+        sendActonToPlayNhacActivity(ACTION_RESUME);
+        sendTimeCurrent();
 
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.stop();
     }
 
     private void CompleteAndStart() {
@@ -104,6 +122,21 @@ public class ForcegroundServiceControl extends Service {
             case ACTION_CLEAR:
                 stopSelf();
                 sendActonToPlayNhacActivity(ACTION_CLEAR);
+                break;
+            case ACTION_NEXT:
+                if (mangbaihat != null && mangbaihat.size() > 0){
+                    nextMusic(mangbaihat.size());
+                }
+                CompleteAndStart();
+                break;
+            case ACTION_PREVIOUS:
+                if (mangbaihat != null && mangbaihat.size() > 0){
+                    previousMusic(mangbaihat.size());
+                }
+                CompleteAndStart();
+                break;
+            case ACTION_DURATION:
+                mediaPlayer.seekTo(seekToTime);
                 break;
         }
     }
@@ -125,6 +158,21 @@ public class ForcegroundServiceControl extends Service {
             sendActonToPlayNhacActivity(ACTION_PAUSE);
         }
     }
+    private void nextMusic(int sizeArray){
+        positionPlayer++;
+
+        if (positionPlayer >= sizeArray){
+            positionPlayer = 0;
+        }
+        sendActonToPlayNhacActivity(ACTION_NEXT);
+    }
+    private void previousMusic(int sizeArray){
+        positionPlayer--;
+        if (positionPlayer < 0){
+            positionPlayer = sizeArray-1;
+        }
+        sendActonToPlayNhacActivity(ACTION_PREVIOUS);
+    }
 
 
     private void sendNotification(Song song) {
@@ -134,6 +182,19 @@ public class ForcegroundServiceControl extends Service {
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.layout_notification_playmusic);
         remoteViews.setTextViewText(R.id.tv_title_song, song.getsName());
         remoteViews.setTextViewText(R.id.tv_single_song, song.getsArtist());
+        Picasso.get().load(song.getsImageUrl())
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        remoteViews.setImageViewBitmap(R.id.img_song,bitmap);
+                    }
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                    }
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    }
+                });
 
         remoteViews.setImageViewResource(R.id.img_play_or_pause, R.drawable.baseline_pause_circle_24);
 
@@ -169,11 +230,26 @@ public class ForcegroundServiceControl extends Service {
             intent.putExtra("status_player", isPlaying);
             intent.putExtra("action_music", action);
             intent.putExtra("position_music", positionPlayer);
-
+            intent.putExtra("duration_music", duration);
+            intent.putExtra("seektomusic", curentime);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
     }
-
+    private void sendTimeCurrent(){
+        if (mediaPlayer != null){
+            curentime = mediaPlayer.getCurrentPosition();
+            sendActonToPlayNhacActivity(ACTION_DURATION);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mediaPlayer != null){
+                        sendTimeCurrent();
+                    }
+                }
+            }, 1000);
+        }
+    }
 
     @SuppressLint("StaticFieldLeak")
     class playMP3 extends AsyncTask<String, Void, String> {
@@ -192,6 +268,9 @@ public class ForcegroundServiceControl extends Service {
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
+                        if (mangbaihat != null && mangbaihat.size() > 0){
+                            nextMusic(mangbaihat.size());
+                        }
                         CompleteAndStart();
                         try {
                             Thread.sleep(1000);
@@ -206,7 +285,7 @@ public class ForcegroundServiceControl extends Service {
                 e.printStackTrace();
             }
             mediaPlayer.start();
-
+            duration = mediaPlayer.getDuration();
         }
     }
 }

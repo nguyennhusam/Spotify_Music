@@ -5,33 +5,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#41644A"
     android:orientation="vertical">
 
 
-    <RelativeLayout
-        android:id="@+id/menu_top10"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_hitsongs"
+        android:padding="10px"
+        android:layout_marginTop="20px"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:layout_marginLeft="10dp"
+        android:text="NGHE NHIỀU NHẤT"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:layout_centerVertical="true"/>
 
-
-        <TextView
-            android:id="@+id/tv_hitsongs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="Top 10 most listened songs"
-            android:textColor="@color/black"
-            android:textSize="25dp"
-            android:layout_centerVertical="true" />
-    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:padding="10dp"
         android:id="@+id/recyclerviewtop10"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menu_top10" />
 
