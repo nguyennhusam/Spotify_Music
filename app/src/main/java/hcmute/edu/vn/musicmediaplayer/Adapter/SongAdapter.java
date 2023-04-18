@@ -42,6 +42,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        System.out.println("From Song Adapter "+getItemCount());
         Song songModel = songsRVModalArrayList.get(position);
         Picasso.get().load(songModel.getsImageUrl()).into(holder.songIV);
         holder.songName.setText(songModel.getsName());
@@ -54,7 +55,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        return 0;
+        return songsRVModalArrayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

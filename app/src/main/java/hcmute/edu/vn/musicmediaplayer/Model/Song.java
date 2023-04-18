@@ -13,6 +13,15 @@ public class Song implements Parcelable {
 
     private String songId;
     private String sName;
+
+    public Song(String songId, String sName, String sSongUrl, String sArtist, String sImageUrl) {
+        this.songId = songId;
+        this.sName = sName;
+        this.sSongUrl = sSongUrl;
+        this.sArtist = sArtist;
+        this.sImageUrl = sImageUrl;
+    }
+
     private String sSongUrl;
     private String sArtist;
     private String sImageUrl;

@@ -105,8 +105,8 @@ public class LibraryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent  = new Intent(getContext(),AlbumDetailsActivity.class);
-//                intent.putExtras();
-                startActivity(intent);
+                intent.putExtra("localAlbum", "true");
+                getContext().startActivity(intent);
             }
         });
 
@@ -114,7 +114,7 @@ public class LibraryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent  = new Intent(getContext(),AlbumDetailsActivity.class);
-//                intent.putExtras();
+                intent.putExtra("localAlbum", "true");
                 startActivity(intent);
             }
         });
@@ -122,8 +122,8 @@ public class LibraryFragment extends Fragment {
         // Read list album from database
         mDatabaseRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("albums");
         ArrayList<Album> albumRVModalArrayList = new ArrayList<>();
-        FragmentManager  fragmentManager = getChildFragmentManager();
-        AlbumAdapter albumRVAdapter = new AlbumAdapter(albumRVModalArrayList, fragmentManager);
+//        FragmentManager  fragmentManager = getChildFragmentManager();
+        AlbumAdapter albumRVAdapter = new AlbumAdapter(albumRVModalArrayList, getContext());
         albumsRV.setHasFixedSize(true);
         albumsRV.setAdapter(albumRVAdapter);
 

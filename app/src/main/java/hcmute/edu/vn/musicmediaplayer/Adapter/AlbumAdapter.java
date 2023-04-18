@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,13 +33,12 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     private ArrayList<Album> albumRVModalArrayList;
     private Context context;
 
-    private FragmentManager mFragmentManager;
 
 
     // creating a constructor.
-    public AlbumAdapter(ArrayList<Album> albumRVModalArrayList, FragmentManager context) {
+    public AlbumAdapter(ArrayList<Album> albumRVModalArrayList, Context context) {
         this.albumRVModalArrayList = albumRVModalArrayList;
-        this.mFragmentManager = context;
+        this.context = context;
     }
 
     @NonNull
@@ -62,21 +62,24 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             holder.albumNameTV.setText(albumModal.getName());
             System.out.println(albumModal.getTotalSong());
             holder.albumTotalSongTV.setText(albumModal.getTotalSong()+" bài");
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.albumItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlbumDetailFragment fragment = new AlbumDetailFragment();
-                    Bundle args = new Bundle();
-                    args.putString(AlbumDetailFragment.ARG_ALBUM,  albumRVModalArrayList.get(position).getId());
-                    fragment.setArguments(args);
-                    FragmentTransaction transaction = mFragmentManager.beginTransaction();
-                    transaction.replace(R.id.fragment_library, fragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                    // Use Fragment as new screan album detail
 
-//                    Intent intent = new Intent(context, AlbumDetailsActivity.class);
-//                    intent.putExtra("albumId",albumRVModalArrayList.get(position).getId());
-//                    context.startActivity(intent);
+
+//                    AlbumDetailFragment fragment = new AlbumDetailFragment();
+//                    Bundle args = new Bundle();
+//                    args.putString(AlbumDetailFragment.ARG_ALBUM,  albumRVModalArrayList.get(position).getId());
+//                    fragment.setArguments(args);
+//                    FragmentTransaction transaction = mFragmentManager.beginTransaction();
+//                    transaction.replace(R.id.fragment_library, fragment);
+//                    transaction.addToBackStack(null);
+//                    transaction.commit();
+
+                    Intent intent = new Intent(context, AlbumDetailsActivity.class);
+                    intent.putExtra("albumId", albumRVModalArrayList.get(position).getId());
+                    context.startActivity(intent);
                 }
             });
         // adding click listener for album item on`  below line.
@@ -108,11 +111,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         // on below line creating variables
         // for image view and text view.
         private ImageView albumIV;
+        private RelativeLayout albumItem;
         private TextView albumNameTV, albumTotalSongTV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // on below line initializing variables.
+            albumItem = itemView.findViewById(R.id.layout_album_item);
             albumIV = itemView.findViewById(R.id.album_img);
             albumNameTV = itemView.findViewById(R.id.tv_title_album);
             albumTotalSongTV = itemView.findViewById(R.id.tv_album_total);
