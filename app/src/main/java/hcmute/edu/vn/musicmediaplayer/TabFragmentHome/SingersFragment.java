@@ -1,27 +1,24 @@
 package hcmute.edu.vn.musicmediaplayer.TabFragmentHome;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import hcmute.edu.vn.musicmediaplayer.MainActivity;
-import hcmute.edu.vn.musicmediaplayer.Model.Song;
+import hcmute.edu.vn.musicmediaplayer.Activity.SingerActivity;
 import hcmute.edu.vn.musicmediaplayer.R;
 
 public class SingersFragment extends Fragment {
+
     LinearLayout layoutMono;
 
     CircleImageView imageView1;
@@ -94,10 +91,16 @@ public class SingersFragment extends Fragment {
                 .load(R.drawable.charlieputh)
                 .into(imageView6);
 
-
-
-
+        layoutMono = view.findViewById(R.id.layout_mono);
+        layoutMono.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SingerActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
+
 }
