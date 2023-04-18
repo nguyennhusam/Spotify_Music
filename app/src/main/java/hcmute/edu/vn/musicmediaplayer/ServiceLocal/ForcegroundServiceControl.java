@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -90,6 +91,9 @@ public class ForcegroundServiceControl extends Service {
         }
         new playMP3().onPostExecute(linkBaiHat);
         isPlaying = true;
+        duration = mediaPlayer.getDuration();
+        sendActonToPlayNhacActivity(ACTION_RESUME);
+        sendTimeCurrent();
 
     }
     @Override
@@ -201,7 +205,21 @@ public class ForcegroundServiceControl extends Service {
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
     }
-
+    private void sendTimeCurrent(){
+        if (mediaPlayer != null){
+            curentime = mediaPlayer.getCurrentPosition();
+            sendActonToPlayNhacActivity(ACTION_DURATION);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mediaPlayer != null){
+                        sendTimeCurrent();
+                    }
+                }
+            }, 1000);
+        }
+    }
 
     @SuppressLint("StaticFieldLeak")
     class playMP3 extends AsyncTask<String, Void, String> {

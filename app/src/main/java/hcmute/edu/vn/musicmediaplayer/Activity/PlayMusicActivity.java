@@ -52,7 +52,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent != null){
+            if (intent != null) {
                 isplaying = intent.getBooleanExtra("status_player", false);
                 int action = intent.getIntExtra("action_music", 0);
                 duration = intent.getIntExtra("duration_music", 0);
@@ -60,12 +60,13 @@ public class PlayMusicActivity extends AppCompatActivity {
                 position = intent.getIntExtra("position_music", 0);
                 seekBarnhac.setProgress(timeValue);
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
-
+                textViewrunrime.setText(simpleDateFormat.format(timeValue));
                 handleMusic(action);
                 TimeSong();
             }
         }
     };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,22 +78,25 @@ public class PlayMusicActivity extends AppCompatActivity {
         enventClick();
         setViewStart();
         StartService();
+        //overridePendingTransition(R.anim.anim_intent_in, R.anim.anim_intent_out);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
+
     private void StartService() {
-        Intent intent =  new Intent(this, ForcegroundServiceControl.class);
-        if (mangbaihat.size() > 0){
+        Intent intent = new Intent(this, ForcegroundServiceControl.class);
+        if (mangbaihat.size() > 0) {
             intent.putExtra("obj_song_baihat", mangbaihat);
-            System.out.println("size: "+mangbaihat.size());
         }
         startService(intent);
     }
-    private void handleMusic(int action){
-        switch (action){
+
+    private void handleMusic(int action) {
+        switch (action) {
             case ForcegroundServiceControl.ACTION_PAUSE:
                 imageButtonplaypausenhac.setImageResource(R.drawable.baseline_play_circle_24);
                 break;
@@ -107,19 +111,18 @@ public class PlayMusicActivity extends AppCompatActivity {
 //                break;
         }
     }
+
     private void GetDataFromIntent() {
         Intent intent = getIntent();
         mangbaihat.clear();
-        if (intent != null){
-            if (intent.hasExtra("play_music_from_search")){
+        if (intent != null) {
+            if (intent.hasExtra("play_music_from_search")) {
                 Song baiHat = intent.getParcelableExtra("play_music_from_search");
-                System.out.println("testing: "+baiHat.getsName());
                 mangbaihat.add(baiHat);
-            }else if (intent.hasExtra("cacbaihat")){
-                mangbaihat = intent.getParcelableArrayListExtra("cacbaihat");
             }
         }
     }
+
     private void AnhXa() {
         toolbarplaynhac = findViewById(R.id.toolbarplaynhac);
         seekBarnhac = findViewById(R.id.seekBartime);
@@ -142,25 +145,28 @@ public class PlayMusicActivity extends AppCompatActivity {
 
         fragment_dia_nhac = (Fragment_dia_nhac) adapternhac.getItem(position);
     }
-    private void setViewStart(){
+
+    private void setViewStart() {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mangbaihat.size() > 0){
+                if (mangbaihat.size() > 0) {
                     setView(mangbaihat.get(position));
                 }
             }
         }, 500);
     }
-    private void setView(Song song){
+
+    private void setView(Song song) {
         setGradient(song.getsImageUrl());
         fragment_dia_nhac.PlayNhac(song.getsImageUrl());
 
         textViewcasi.setText(song.getsArtist());
         textViewtennhac.setText(song.getsName());
     }
-    private void setGradient(String urlImage){
+
+    private void setGradient(String urlImage) {
         Picasso.get().load(urlImage)
                 .into(new Target() {
                     @Override
@@ -176,21 +182,24 @@ public class PlayMusicActivity extends AppCompatActivity {
                             mContaier.setBackground(gradientDrawableBg);
                         });
                     }
+
                     @Override
                     public void onBitmapFailed(Exception e, Drawable errorDrawable) {
                     }
+
                     @Override
                     public void onPrepareLoad(Drawable placeHolderDrawable) {
                     }
                 });
     }
+
     private void enventClick() {
 
         imageButtonplaypausenhac.setOnClickListener(view -> {
-            if (isplaying){
+            if (isplaying) {
                 sendActionToService(ForcegroundServiceControl.ACTION_PAUSE);
                 imageButtonplaypausenhac.setImageResource(R.drawable.baseline_play_circle_24);
-            }else {
+            } else {
                 sendActionToService(ForcegroundServiceControl.ACTION_RESUME);
                 imageButtonplaypausenhac.setImageResource(R.drawable.baseline_pause_circle_24);
             }
@@ -200,9 +209,11 @@ public class PlayMusicActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 durationToService = seekBar.getProgress();
@@ -215,12 +226,14 @@ public class PlayMusicActivity extends AppCompatActivity {
             finish();
         });
     }
-    private void TimeSong(){
+
+    private void TimeSong() {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
         textViewtatoltime.setText(simpleDateFormat.format(duration));
         seekBarnhac.setMax(duration);
     }
-    private void sendActionToService(int action){
+
+    private void sendActionToService(int action) {
         Intent intent = new Intent(this, ForcegroundServiceControl.class);
         intent.putExtra("action_music_service", action);
         intent.putExtra("duration", durationToService);
