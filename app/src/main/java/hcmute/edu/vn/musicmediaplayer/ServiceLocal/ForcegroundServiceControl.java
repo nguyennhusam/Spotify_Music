@@ -31,6 +31,7 @@ import com.squareup.picasso.Target;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import hcmute.edu.vn.musicmediaplayer.Model.Song;
 import hcmute.edu.vn.musicmediaplayer.R;
@@ -40,6 +41,8 @@ public class ForcegroundServiceControl extends Service {
     public static final int ACTION_RESUME = 2;
     public static final int ACTION_CLEAR = 3;
     public static final int ACTION_DURATION = 4;
+    public static final int ACTION_NEXT = 5;
+    public static final int ACTION_PREVIOUS = 6;
     private boolean isPlaying;
     private MediaPlayer mediaPlayer;
 
@@ -120,6 +123,18 @@ public class ForcegroundServiceControl extends Service {
                 stopSelf();
                 sendActonToPlayNhacActivity(ACTION_CLEAR);
                 break;
+            case ACTION_NEXT:
+                if (mangbaihat != null && mangbaihat.size() > 0){
+                    nextMusic(mangbaihat.size());
+                }
+                CompleteAndStart();
+                break;
+            case ACTION_PREVIOUS:
+                if (mangbaihat != null && mangbaihat.size() > 0){
+                    previousMusic(mangbaihat.size());
+                }
+                CompleteAndStart();
+                break;
             case ACTION_DURATION:
                 mediaPlayer.seekTo(seekToTime);
                 break;
@@ -142,6 +157,21 @@ public class ForcegroundServiceControl extends Service {
             sendNotification(mangbaihat.get(positionPlayer));
             sendActonToPlayNhacActivity(ACTION_PAUSE);
         }
+    }
+    private void nextMusic(int sizeArray){
+        positionPlayer++;
+
+        if (positionPlayer >= sizeArray){
+            positionPlayer = 0;
+        }
+        sendActonToPlayNhacActivity(ACTION_NEXT);
+    }
+    private void previousMusic(int sizeArray){
+        positionPlayer--;
+        if (positionPlayer < 0){
+            positionPlayer = sizeArray-1;
+        }
+        sendActonToPlayNhacActivity(ACTION_PREVIOUS);
     }
 
 
@@ -238,6 +268,9 @@ public class ForcegroundServiceControl extends Service {
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
+                        if (mangbaihat != null && mangbaihat.size() > 0){
+                            nextMusic(mangbaihat.size());
+                        }
                         CompleteAndStart();
                         try {
                             Thread.sleep(1000);
@@ -252,7 +285,7 @@ public class ForcegroundServiceControl extends Service {
                 e.printStackTrace();
             }
             mediaPlayer.start();
-
+            duration = mediaPlayer.getDuration();
         }
     }
 }

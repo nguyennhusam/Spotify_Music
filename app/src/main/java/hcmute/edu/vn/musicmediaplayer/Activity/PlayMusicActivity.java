@@ -44,7 +44,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     private SeekBar seekBarnhac;
     private boolean isplaying;
     private TextView textViewtennhac, textViewcasi, textViewrunrime, textViewtatoltime;
-    private ImageButton imageButtontronnhac, imageButtonpreviewnhac, imageButtonplaypausenhac, imageButtonnexnhac,
+    private ImageButton imageButtontronnhac, imageButtonpreviewnhac, imageButtonplaypausenhac, imageButtonnextnhac,
             imageButtonlapnhac;
     private int dem = 0, position = 0, duration = 0, timeValue = 0, durationToService = 0;
     private Fragment_dia_nhac fragment_dia_nhac;
@@ -103,12 +103,12 @@ public class PlayMusicActivity extends AppCompatActivity {
             case ForcegroundServiceControl.ACTION_RESUME:
                 imageButtonplaypausenhac.setImageResource(R.drawable.baseline_pause_circle_24);
                 break;
-//            case ForcegroundServiceControl.ACTION_NEXT:
-//                completeNextMusic();
-//                break;
-//            case ForcegroundServiceControl.ACTION_PREVIOUS:
-//                completePreviousMusic();
-//                break;
+            case ForcegroundServiceControl.ACTION_NEXT:
+                completeNextMusic();
+                break;
+            case ForcegroundServiceControl.ACTION_PREVIOUS:
+                completePreviousMusic();
+                break;
         }
     }
 
@@ -119,6 +119,8 @@ public class PlayMusicActivity extends AppCompatActivity {
             if (intent.hasExtra("play_music_from_search")) {
                 Song baiHat = intent.getParcelableExtra("play_music_from_search");
                 mangbaihat.add(baiHat);
+            }else if (intent.hasExtra("list_play_music_from_search")){
+                mangbaihat = intent.getParcelableArrayListExtra("list_play_music_from_search");
             }
         }
     }
@@ -134,6 +136,9 @@ public class PlayMusicActivity extends AppCompatActivity {
         textViewcasi = findViewById(R.id.textViewtencasiplaynhac);
         textViewtennhac = findViewById(R.id.textViewtenbaihatplaynhac);
         textViewrunrime = findViewById(R.id.textViewruntime);
+
+        imageButtonpreviewnhac = findViewById(R.id.imageButtonpreview);
+        imageButtonnextnhac = findViewById(R.id.imageButtonnext);
 
         fragment_dia_nhac = new Fragment_dia_nhac();
         adapternhac = new ViewPagerDiaNhac(getSupportFragmentManager());
@@ -220,13 +225,33 @@ public class PlayMusicActivity extends AppCompatActivity {
                 sendActionToService(ForcegroundServiceControl.ACTION_DURATION);
             }
         });
-
+        imageButtonnextnhac.setOnClickListener(view -> sendActionToService(ForcegroundServiceControl.ACTION_NEXT));
+        imageButtonpreviewnhac.setOnClickListener(view -> sendActionToService(ForcegroundServiceControl.ACTION_PREVIOUS));
         toolbarplaynhac.setNavigationOnClickListener(view -> {
             mangbaihat.clear();
             finish();
         });
     }
-
+    private void NextMusic(){
+        imageButtonplaypausenhac.setImageResource(R.drawable.baseline_play_circle_24);
+        timeValue = 0;
+    }
+    private void completeNextMusic() {
+        if (mangbaihat.size() > 0){
+            NextMusic();
+            setView(mangbaihat.get(position));
+        }
+    }
+    private void PreviousMusic(){
+        imageButtonplaypausenhac.setImageResource(R.drawable.baseline_play_circle_24);
+        timeValue = 0;
+    }
+    private void completePreviousMusic() {
+        if (mangbaihat.size() > 0){
+            PreviousMusic();
+            setView(mangbaihat.get(position));
+        }
+    }
     private void TimeSong() {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
         textViewtatoltime.setText(simpleDateFormat.format(duration));
