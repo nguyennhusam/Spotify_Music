@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -104,8 +105,8 @@ public class LibraryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent  = new Intent(getContext(),AlbumDetailsActivity.class);
-//                intent.putExtras();
-                startActivity(intent);
+                intent.putExtra("localAlbum", "true");
+                getContext().startActivity(intent);
             }
         });
 
@@ -113,13 +114,15 @@ public class LibraryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent  = new Intent(getContext(),AlbumDetailsActivity.class);
-//                intent.putExtras();
+                intent.putExtra("localAlbum", "true");
                 startActivity(intent);
             }
         });
 
+        // Read list album from database
         mDatabaseRef = FirebaseDatabase.getInstance("https://musicapp-694ed-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("albums");
         ArrayList<Album> albumRVModalArrayList = new ArrayList<>();
+//        FragmentManager  fragmentManager = getChildFragmentManager();
         AlbumAdapter albumRVAdapter = new AlbumAdapter(albumRVModalArrayList, getContext());
         albumsRV.setHasFixedSize(true);
         albumsRV.setAdapter(albumRVAdapter);

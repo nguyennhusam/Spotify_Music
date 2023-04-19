@@ -3,20 +3,26 @@ package hcmute.edu.vn.musicmediaplayer.Adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
 
+import hcmute.edu.vn.musicmediaplayer.AlbumDetailFragment;
 import hcmute.edu.vn.musicmediaplayer.AlbumDetailsActivity;
 import hcmute.edu.vn.musicmediaplayer.LibraryFragment;
 import hcmute.edu.vn.musicmediaplayer.Model.Album;
@@ -26,6 +32,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     // creating variables for array list and context
     private ArrayList<Album> albumRVModalArrayList;
     private Context context;
+
+
 
     // creating a constructor.
     public AlbumAdapter(ArrayList<Album> albumRVModalArrayList, Context context) {
@@ -54,11 +62,23 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             holder.albumNameTV.setText(albumModal.getName());
             System.out.println(albumModal.getTotalSong());
             holder.albumTotalSongTV.setText(albumModal.getTotalSong()+" bài");
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.albumItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Use Fragment as new screan album detail
+
+
+//                    AlbumDetailFragment fragment = new AlbumDetailFragment();
+//                    Bundle args = new Bundle();
+//                    args.putString(AlbumDetailFragment.ARG_ALBUM,  albumRVModalArrayList.get(position).getId());
+//                    fragment.setArguments(args);
+//                    FragmentTransaction transaction = mFragmentManager.beginTransaction();
+//                    transaction.replace(R.id.fragment_library, fragment);
+//                    transaction.addToBackStack(null);
+//                    transaction.commit();
+
                     Intent intent = new Intent(context, AlbumDetailsActivity.class);
-                    intent.putExtra("albumName",albumRVModalArrayList.get(position).getName());
+                    intent.putExtra("albumId", albumRVModalArrayList.get(position).getId());
                     context.startActivity(intent);
                 }
             });
@@ -91,11 +111,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         // on below line creating variables
         // for image view and text view.
         private ImageView albumIV;
+        private RelativeLayout albumItem;
         private TextView albumNameTV, albumTotalSongTV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // on below line initializing variables.
+            albumItem = itemView.findViewById(R.id.layout_album_item);
             albumIV = itemView.findViewById(R.id.album_img);
             albumNameTV = itemView.findViewById(R.id.tv_title_album);
             albumTotalSongTV = itemView.findViewById(R.id.tv_album_total);
