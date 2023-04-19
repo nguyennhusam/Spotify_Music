@@ -114,10 +114,10 @@ public class ForcegroundServiceControl extends Service {
     private void handleActionMusic(int action){
         switch (action){
             case ACTION_PAUSE:
-                pauseMusic();
+                pauseMusic(mangbaihat.get(positionPlayer));
                 break;
             case ACTION_RESUME:
-                resumeMusic();
+                resumeMusic(mangbaihat.get(positionPlayer));
                 break;
             case ACTION_CLEAR:
                 stopSelf();
@@ -141,20 +141,20 @@ public class ForcegroundServiceControl extends Service {
         }
     }
 
-    private void resumeMusic() {
+    private void resumeMusic(Song song) {
         if(mediaPlayer != null && !isPlaying){
             mediaPlayer.start();
             isPlaying = true;
-            sendNotification(mangbaihat.get(positionPlayer));
+            sendNotification(song);
             sendActonToPlayNhacActivity(ACTION_RESUME);
         }
     }
 
-    private void pauseMusic() {
+    private void pauseMusic(Song song) {
         if(mediaPlayer != null && isPlaying){
             mediaPlayer.pause();
             isPlaying = false;
-            sendNotification(mangbaihat.get(positionPlayer));
+            sendNotification(song);
             sendActonToPlayNhacActivity(ACTION_PAUSE);
         }
     }

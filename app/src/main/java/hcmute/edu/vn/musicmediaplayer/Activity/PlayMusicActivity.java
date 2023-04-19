@@ -121,6 +121,7 @@ public class PlayMusicActivity extends AppCompatActivity {
                 mangbaihat.add(baiHat);
             }else if (intent.hasExtra("list_play_music_from_search")){
                 mangbaihat = intent.getParcelableArrayListExtra("list_play_music_from_search");
+                position = intent.getIntExtra("click_position",0);
             }
         }
     }
