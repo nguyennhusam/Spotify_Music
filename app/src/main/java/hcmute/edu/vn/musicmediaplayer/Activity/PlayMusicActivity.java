@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -42,11 +43,11 @@ public class PlayMusicActivity extends AppCompatActivity {
     private static ArrayList<Song> mangbaihat = new ArrayList<>();
     private androidx.appcompat.widget.Toolbar toolbarplaynhac;
     private SeekBar seekBarnhac;
-    private boolean isplaying;
+    private boolean isplaying,repeat = false;
     private TextView textViewtennhac, textViewcasi, textViewrunrime, textViewtatoltime;
     private ImageButton imageButtontronnhac, imageButtonpreviewnhac, imageButtonplaypausenhac, imageButtonnextnhac,
             imageButtonlapnhac;
-    private int dem = 0, position = 0, duration = 0, timeValue = 0, durationToService = 0;
+    private int dem = 0, position = 0,position_click = 0, duration = 0, timeValue = 0, durationToService = 0;
     private Fragment_dia_nhac fragment_dia_nhac;
     public static ViewPagerDiaNhac adapternhac;
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -91,6 +92,8 @@ public class PlayMusicActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ForcegroundServiceControl.class);
         if (mangbaihat.size() > 0) {
             intent.putExtra("obj_song_baihat", mangbaihat);
+            System.out.println("send position click: "+position);
+            intent.putExtra("click_position",position);
         }
         startService(intent);
     }
@@ -132,14 +135,16 @@ public class PlayMusicActivity extends AppCompatActivity {
         ViewPager viewPagerplaynhac = findViewById(R.id.viewPagerdianhac);
 
         imageButtonplaypausenhac = findViewById(R.id.imageButtonplaypause);
+        imageButtonlapnhac = findViewById(R.id.imageButtonlap);
+        imageButtonpreviewnhac = findViewById(R.id.imageButtonpreview);
+        imageButtonnextnhac = findViewById(R.id.imageButtonnext);
 
         textViewtatoltime = findViewById(R.id.textViewtimetotal);
         textViewcasi = findViewById(R.id.textViewtencasiplaynhac);
         textViewtennhac = findViewById(R.id.textViewtenbaihatplaynhac);
         textViewrunrime = findViewById(R.id.textViewruntime);
 
-        imageButtonpreviewnhac = findViewById(R.id.imageButtonpreview);
-        imageButtonnextnhac = findViewById(R.id.imageButtonnext);
+
 
         fragment_dia_nhac = new Fragment_dia_nhac();
         adapternhac = new ViewPagerDiaNhac(getSupportFragmentManager());
@@ -149,7 +154,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         setSupportActionBar(toolbarplaynhac);
         toolbarplaynhac.setTitleTextColor(Color.BLACK);
 
-        fragment_dia_nhac = (Fragment_dia_nhac) adapternhac.getItem(position);
+        fragment_dia_nhac = (Fragment_dia_nhac) adapternhac.getItem(0);
     }
 
     private void setViewStart() {
@@ -210,7 +215,7 @@ public class PlayMusicActivity extends AppCompatActivity {
                 imageButtonplaypausenhac.setImageResource(R.drawable.baseline_pause_circle_24);
             }
         });
-
+        imageButtonlapnhac.setOnClickListener(this::onClickRepeat);
         seekBarnhac.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -232,6 +237,18 @@ public class PlayMusicActivity extends AppCompatActivity {
             mangbaihat.clear();
             finish();
         });
+    }
+    private void onClickRepeat(View view) {
+        if (!repeat) {
+
+                imageButtonlapnhac.setImageResource(R.drawable.baseline_repeat_on_24);
+
+            repeat = true;
+        } else {
+            imageButtonlapnhac.setImageResource(R.drawable.baseline_repeat_24);
+            repeat = false;
+        }
+        sendActionToService(ForcegroundServiceControl.ACTION_REPEAT);
     }
     private void NextMusic(){
         imageButtonplaypausenhac.setImageResource(R.drawable.baseline_play_circle_24);
@@ -262,6 +279,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     private void sendActionToService(int action) {
         Intent intent = new Intent(this, ForcegroundServiceControl.class);
         intent.putExtra("action_music_service", action);
+        intent.putExtra("repeat_music", repeat);
         intent.putExtra("duration", durationToService);
         startService(intent);
     }

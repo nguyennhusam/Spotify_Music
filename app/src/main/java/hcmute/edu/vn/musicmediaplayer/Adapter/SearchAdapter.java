@@ -66,7 +66,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewhold
                 Bundle bundle = new Bundle();
                 intent.putExtra("list_play_music_from_search", new ArrayList<>(listSong));
                 intent.putExtras(bundle);
-                intent.putExtra("click_position",position-1);
+                intent.putExtra("click_position",position);
 
                 context.startActivity(intent);
             }

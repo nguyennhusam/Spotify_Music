@@ -43,7 +43,9 @@ public class ForcegroundServiceControl extends Service {
     public static final int ACTION_DURATION = 4;
     public static final int ACTION_NEXT = 5;
     public static final int ACTION_PREVIOUS = 6;
-    private boolean isPlaying;
+    public static final int ACTION_REPEAT = 7;
+
+    private boolean isPlaying,isRepeat;
     private MediaPlayer mediaPlayer;
 
     private ArrayList<Song> mangbaihat = new ArrayList<>();
@@ -68,6 +70,8 @@ public class ForcegroundServiceControl extends Service {
             if (intent.hasExtra("obj_song_baihat")) {
                 clearArray();
                 mangbaihat = intent.getParcelableArrayListExtra("obj_song_baihat");
+                positionPlayer = intent.getIntExtra("click_position",0);
+                System.out.println("recieve position click: "+positionPlayer);
             }
 
         }
@@ -76,6 +80,8 @@ public class ForcegroundServiceControl extends Service {
         }
         int actionMusic = intent.getIntExtra("action_music_service", 0);
         seekToTime = intent.getIntExtra("duration", 0);
+        isRepeat = intent.getBooleanExtra("repeat_music", false);
+
         //System.out.println("intent null");
         handleActionMusic(actionMusic);
         return START_NOT_STICKY;
@@ -160,7 +166,9 @@ public class ForcegroundServiceControl extends Service {
     }
     private void nextMusic(int sizeArray){
         positionPlayer++;
-
+        if (isRepeat){
+            positionPlayer -= 1;
+        }
         if (positionPlayer >= sizeArray){
             positionPlayer = 0;
         }
@@ -168,6 +176,9 @@ public class ForcegroundServiceControl extends Service {
     }
     private void previousMusic(int sizeArray){
         positionPlayer--;
+        if (isRepeat){
+            positionPlayer += 1;
+        }
         if (positionPlayer < 0){
             positionPlayer = sizeArray-1;
         }

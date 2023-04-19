@@ -25,7 +25,8 @@ public class ViewPagerDiaNhac extends FragmentPagerAdapter {
     public int getCount() {
         return fragments.size();
     }
-    public void AddFragment(Fragment fragment){
+
+    public void AddFragment(Fragment fragment) {
         fragments.add(fragment);
     }
 
