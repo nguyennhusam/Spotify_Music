@@ -10,7 +10,9 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -18,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,15 +29,23 @@ import androidx.palette.graphics.Palette;
 import androidx.viewpager.widget.ViewPager;
 
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import hcmute.edu.vn.musicmediaplayer.Adapter.ViewPagerDiaNhac;
 import hcmute.edu.vn.musicmediaplayer.Fragment.Fragment_dia_nhac;
+import hcmute.edu.vn.musicmediaplayer.Model.DBHandler;
 import hcmute.edu.vn.musicmediaplayer.Model.Song;
 import hcmute.edu.vn.musicmediaplayer.R;
 import hcmute.edu.vn.musicmediaplayer.ServiceLocal.ForcegroundServiceControl;
@@ -45,11 +56,15 @@ public class PlayMusicActivity extends AppCompatActivity {
     private SeekBar seekBarnhac;
     private boolean isplaying,repeat = false;
     private TextView textViewtennhac, textViewcasi, textViewrunrime, textViewtatoltime;
-    private ImageButton imageButtontronnhac, imageButtonpreviewnhac, imageButtonplaypausenhac, imageButtonnextnhac,
+    private ImageButton imageButtontronnhac, imageButtonpreviewnhac, imageButtonplaypausenhac, imageButtonnextnhac, imageButtonDowmload,
             imageButtonlapnhac;
     private int dem = 0, position = 0,position_click = 0, duration = 0, timeValue = 0, durationToService = 0;
     private Fragment_dia_nhac fragment_dia_nhac;
     public static ViewPagerDiaNhac adapternhac;
+
+    StorageReference audioReference, imageReference;
+
+    DBHandler dbHandler;
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -138,6 +153,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         imageButtonlapnhac = findViewById(R.id.imageButtonlap);
         imageButtonpreviewnhac = findViewById(R.id.imageButtonpreview);
         imageButtonnextnhac = findViewById(R.id.imageButtonnext);
+        imageButtonDowmload = findViewById(R.id.imageButtonDownload);
 
         textViewtatoltime = findViewById(R.id.textViewtimetotal);
         textViewcasi = findViewById(R.id.textViewtencasiplaynhac);
@@ -155,6 +171,8 @@ public class PlayMusicActivity extends AppCompatActivity {
         toolbarplaynhac.setTitleTextColor(Color.BLACK);
 
         fragment_dia_nhac = (Fragment_dia_nhac) adapternhac.getItem(0);
+
+        dbHandler = new DBHandler(PlayMusicActivity.this);
     }
 
     private void setViewStart() {
@@ -205,6 +223,26 @@ public class PlayMusicActivity extends AppCompatActivity {
     }
 
     private void enventClick() {
+
+        imageButtonDowmload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Song song = mangbaihat.get(position);
+                System.out.println(song.getsName());
+                if (dbHandler.readSong(song.getSongId()).size()!=0){
+                    Toast.makeText(PlayMusicActivity.this, "Bài nhạc đã có sẵn", Toast.LENGTH_SHORT).show();
+
+
+                }
+                else {
+                    try {
+                        downloadFile(song);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
 
         imageButtonplaypausenhac.setOnClickListener(view -> {
             if (isplaying) {
@@ -282,5 +320,83 @@ public class PlayMusicActivity extends AppCompatActivity {
         intent.putExtra("repeat_music", repeat);
         intent.putExtra("duration", durationToService);
         startService(intent);
+    }
+    private void downloadFile(Song song) throws IOException {
+        // Tạo một đối tượng OkHttpClient để tải xuống tệp
+        audioReference = FirebaseStorage.getInstance().getReferenceFromUrl(song.getsSongUrl());
+        imageReference = FirebaseStorage.getInstance().getReferenceFromUrl(song.getsImageUrl());
+
+
+        File musicDirectory = new File(String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MUSIC)), song.getSongId() + ".mp3");
+
+        System.out.println(musicDirectory);
+//        File localFile = File.createTempFile("images", "jpg");
+        File imageDirectory = new File(String.valueOf(getExternalFilesDir(Environment.DIRECTORY_PICTURES)),song.getSongId()+".jpg");
+
+
+        audioReference.getFile(musicDirectory).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(PlayMusicActivity.this, "Download Audo Success", Toast.LENGTH_SHORT).show();
+                Song song = mangbaihat.get(position);
+                String name = song.getsName();
+                String songUrl = String.valueOf(musicDirectory);
+                String imageUrl = String.valueOf(imageDirectory);
+                String id = song.getSongId();
+                String artist = song.getsArtist();
+
+                // validating if the text fields are empty or not.
+                if (name.isEmpty() || songUrl.isEmpty() || imageUrl.isEmpty() || id.isEmpty() || artist.isEmpty() || id.isEmpty()) {
+                    Toast.makeText(PlayMusicActivity.this, "Please enter all the data..", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // on below line we are calling a method to add new
+                // course to sqlite data and pass all our values to it.
+                dbHandler.addNewCourse(id, name, songUrl, imageUrl, artist);
+
+                // Local temp file has been created
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
+
+
+        System.out.println(musicDirectory);
+//        File localFile = File.createTempFile("images", "jpg");
+
+        imageReference.getFile(imageDirectory).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(PlayMusicActivity.this, "Download Image Success", Toast.LENGTH_SHORT).show();
+//                Song song = mangbaihat.get(position);
+//                String name = song.getsName();
+//                System.out.println("Test id "+ song.getSongId());
+//                String songUrl = String.valueOf(musicDirectory);
+//                String imageUrl = String.valueOf(imageDirectory);
+//                String id = song.getSongId();
+//                String artist = song.getsArtist();
+//
+//                // validating if the text fields are empty or not.
+////                if (name.isEmpty() || songUrl.isEmpty() || imageUrl.isEmpty() || id.isEmpty()||artist.isEmpty()||id.isEmpty()) {
+////                    return;
+////                }
+//
+//                // on below line we are calling a method to add new
+//                // course to sqlite data and pass all our values to it.
+//                dbHandler.updateSong(id,name , songUrl, imageUrl,artist);
+
+                // Local temp file has been created
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
     }
 }

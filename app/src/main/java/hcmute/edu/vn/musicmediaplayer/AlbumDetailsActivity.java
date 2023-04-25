@@ -2,10 +2,16 @@ package hcmute.edu.vn.musicmediaplayer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -30,10 +37,11 @@ public class AlbumDetailsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ImageView albumPhoto;
-    String albumId;
+    String albumId, albumIdLocal;
     TextView albumDescription,albumName;
 
     ArrayList<Song> albumSongs= new ArrayList<>();
+
 
     private StorageReference imageStorageRef;
     private StorageReference audioStorageRef;
@@ -41,6 +49,13 @@ public class AlbumDetailsActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     private DatabaseReference albumDatabaseRef;
 
+//    private BroadcastReceiver updateSongListReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            // Cập nhật danh sách bài hát ngay lập tức
+//            loadSongList();
+//        }
+//    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,17 +71,23 @@ public class AlbumDetailsActivity extends AppCompatActivity {
         songRVModelArrayList = new ArrayList<>();
         SongAdapter songAdapter = new SongAdapter(songRVModelArrayList, getApplicationContext());
         recyclerView.setAdapter(songAdapter);
+//        IntentFilter filter = new IntentFilter("updateSongList");
+//        LocalBroadcastManager.getInstance(this).registerReceiver(updateSongListReceiver, filter);
+
 
         String check = getIntent().getStringExtra("localAlbum");
         System.out.println(check);
 
 
         if (check!=null)  {
-            for (Song song :             dbHandler.readCourses()){
+//            albumIdLocal = String.valueOf(getIntent().getIntExtra("albumId", -1));
+
+            for (Song song :             dbHandler.readSongs()){
                 songRVModelArrayList.add(song);
             }
 
-            System.out.println(songRVModelArrayList.size());
+
+
             songAdapter.notifyDataSetChanged();
         }else {
             albumId = getIntent().getStringExtra("albumId");
@@ -96,7 +117,12 @@ public class AlbumDetailsActivity extends AppCompatActivity {
             });
         }
 
-
+        if (songRVModelArrayList.size()!=0) {
+            Picasso.get()
+                    .load(songRVModelArrayList.get(0).getsImageUrl())
+                    .error(R.drawable.hot_music)
+                    .into(albumPhoto);
+        }
 
 
 //        recyclerViewtim.setLayoutManager(new LinearLayoutManager(getContext()));
